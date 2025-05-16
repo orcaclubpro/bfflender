@@ -1,0 +1,195 @@
+.section {
+  background: var(--gradient-blue-purple);
+  padding: var(--space-16) 0;
+  position: relative;
+  overflow: hidden;
+  color: white;
+}
+
+/* Animated background particles */
+.section::before, 
+.section::after {
+  content: "";
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  mix-blend-mode: overlay;
+  opacity: 0.4;
+  z-index: 1;
+  animation: float 15s ease-in-out infinite alternate;
+}
+
+.section::before {
+  background: radial-gradient(circle, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 70%);
+  top: -250px;
+  left: -150px;
+  animation-delay: 0s;
+}
+
+.section::after {
+  background: radial-gradient(circle, rgba(122,124,255,0.4) 0%, rgba(122,124,255,0) 70%);
+  bottom: -200px;
+  right: -150px;
+  animation-delay: -5s;
+}
+
+@keyframes float {
+  0% { transform: translate(0, 0) rotate(0deg); }
+  50% { transform: translate(30px, 20px) rotate(5deg); }
+  100% { transform: translate(-10px, 10px) rotate(-5deg); }
+}
+
+.container {
+  max-width: var(--container-width);
+  margin: 0 auto;
+  padding: 0 var(--space-4);
+  text-align: center;
+  position: relative;
+  z-index: 2;
+}
+
+.title {
+  font-size: var(--font-size-4xl);
+  font-weight: var(--font-weight-bold);
+  margin-bottom: var(--space-6);
+  position: relative;
+  display: inline-block;
+  animation: fadeUp 0.8s ease-out;
+}
+
+/* Title glow effect */
+.title::after {
+  content: "";
+  position: absolute;
+  width: 120%;
+  height: 30%;
+  background: rgba(255, 255, 255, 0.1);
+  filter: blur(20px);
+  bottom: -10px;
+  left: -10%;
+  z-index: -1;
+  border-radius: var(--radius-full);
+}
+
+.description {
+  font-size: var(--font-size-xl);
+  max-width: 700px;
+  margin: 0 auto var(--space-10);
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.9);
+  animation: fadeUp 0.8s ease-out 0.2s both;
+}
+
+.buttonGroup {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-6);
+  margin-top: var(--space-8);
+  animation: fadeUp 0.8s ease-out 0.4s both;
+}
+
+.primaryButton {
+  background: white;
+  color: var(--primary);
+  font-weight: var(--font-weight-semibold);
+  padding: var(--space-4) var(--space-8);
+  border-radius: var(--radius-full);
+  border: none;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  box-shadow: var(--shadow-lg);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Button hover effects */
+.primaryButton:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 25px rgba(0, 0, 0, 0.15);
+  color: var(--primary-dark);
+}
+
+/* Button shine effect */
+.primaryButton::after {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -60%;
+  width: 20%;
+  height: 200%;
+  opacity: 0;
+  transform: rotate(30deg);
+  background: rgba(255, 255, 255, 0.13);
+  background: linear-gradient(
+    to right, 
+    rgba(255, 255, 255, 0.13) 0%,
+    rgba(255, 255, 255, 0.13) 77%,
+    rgba(255, 255, 255, 0.5) 92%,
+    rgba(255, 255, 255, 0.0) 100%
+  );
+}
+
+.primaryButton:hover::after {
+  opacity: 1;
+  left: 130%;
+  transition: left 0.7s ease-in-out;
+}
+
+.secondaryButton {
+  background: transparent;
+  color: white;
+  font-weight: var(--font-weight-semibold);
+  padding: var(--space-4) var(--space-8);
+  border-radius: var(--radius-full);
+  border: 2px solid rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  position: relative;
+  overflow: hidden;
+}
+
+.secondaryButton:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: white;
+  transform: translateY(-3px);
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .section {
+    padding: var(--space-12) 0;
+  }
+  
+  .title {
+    font-size: var(--font-size-3xl);
+  }
+  
+  .description {
+    font-size: var(--font-size-lg);
+    margin-bottom: var(--space-8);
+  }
+  
+  .buttonGroup {
+    flex-direction: column;
+    gap: var(--space-4);
+    width: 100%;
+    max-width: 280px;
+    margin: var(--space-6) auto 0;
+  }
+  
+  .primaryButton, 
+  .secondaryButton {
+    width: 100%;
+  }
+} 
