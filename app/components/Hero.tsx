@@ -13,7 +13,7 @@ const Hero = () => {
             Your BFF in Home Financing
           </h1>
           <p className={styles.subtitle}>
-            We're not just lenders. We're partners for life, dedicated to making your mortgage experience simple and rewarding.
+            We&apos;re not just lenders. We&apos;re partners for life, dedicated to making your mortgage experience simple and rewarding.
           </p>
           <div className={styles.buttonGroup}>
             <button className={styles.primaryButton}>

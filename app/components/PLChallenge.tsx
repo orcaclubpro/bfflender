@@ -11,7 +11,7 @@ const PLChallenge = () => {
         <div className={styles.header}>
           <h2 className={styles.title}>The P&L Challenge</h2>
           <p className={styles.subtitle}>
-            We're so confident in our competitive model, we're willing to bet on it.
+            We&apos;re so confident in our competitive model, we&apos;re willing to bet on it.
           </p>
         </div>
         
@@ -22,13 +22,13 @@ const PLChallenge = () => {
             </div>
             <div className={styles.contentBox}>
               <h3 className={styles.cardTitle}>
-                We'll Compare Your Existing P&L With Ours
+                We&apos;ll Compare Your Existing P&L With Ours
               </h3>
               <p className={styles.cardText}>
-                If we cannot demonstrate a better financial model, we'll give you two tickets to a Las Vegas show of your choice.
+                If we cannot demonstrate a better financial model, we&apos;ll give you two tickets to a Las Vegas show of your choice.
               </p>
               <p className={styles.cardSubtext}>
-                Our transparent approach to mortgage lending means we're confident in showing you exactly how our model outperforms the competition.
+                Our transparent approach to mortgage lending means we&apos;re confident in showing you exactly how our model outperforms the competition.
               </p>
               <button className={styles.button}>
                 Take the Challenge <ArrowRight className={styles.iconRight} />

@@ -13,7 +13,7 @@ const Benefits = () => {
             Why Choose BFFLender?
           </h2>
           <p className={styles.subtitle}>
-            We're more than just competitive rates. We're your mortgage BFF.
+            We&apos;re more than just competitive rates. We&apos;re your mortgage BFF.
           </p>
         </div>
         
@@ -77,7 +77,7 @@ const Benefits = () => {
           <div className={styles.ctaCard}>
             <h3 className={styles.ctaTitle}>Ready to see the difference?</h3>
             <p className={styles.ctaText}>
-              Join the hundreds of mortgage professionals who've boosted their business with BFFLender.
+              Join the hundreds of mortgage professionals who&apos;ve boosted their business with BFFLender.
             </p>
             <button className={styles.ctaButton}>
               Get Started Today

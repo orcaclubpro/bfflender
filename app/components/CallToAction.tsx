@@ -11,7 +11,7 @@ const CallToAction = () => {
           Ready to Find Your Perfect Mortgage Partner?
         </h2>
         <p className={styles.description}>
-          Let's start your journey together – no pressure, just friendly guidance and a partnership built to last.
+          Let&apos;s start your journey together – no pressure, just friendly guidance and a partnership built to last.
         </p>
         <div className={styles.buttonGroup}>
           <button className={styles.primaryButton}>

@@ -12,7 +12,7 @@ const Testimonials = () => {
             What Our Partners Say
           </h2>
           <p className={styles.subtitle}>
-            Hear from mortgage professionals who've found their perfect match with BFFLender.
+            Hear from mortgage professionals who&apos;ve found their perfect match with BFFLender.
           </p>
         </div>
         
@@ -27,7 +27,7 @@ const Testimonials = () => {
               </div>
             </div>
             <p className={styles.testimonialText}>
-              "After taking the P&L Challenge, I was amazed at how much more profitable my branch could be. The transparency and support have been game-changing."
+              &quot;After taking the P&L Challenge, I was amazed at how much more profitable my branch could be. The transparency and support have been game-changing.&quot;
             </p>
           </div>
           
@@ -41,7 +41,7 @@ const Testimonials = () => {
               </div>
             </div>
             <p className={styles.testimonialText}>
-              "The personal branding support and flat organizational structure have allowed me to grow my business faster than I ever imagined possible."
+              &quot;The personal branding support and flat organizational structure have allowed me to grow my business faster than I ever imagined possible.&quot;
             </p>
           </div>
           
@@ -55,7 +55,7 @@ const Testimonials = () => {
               </div>
             </div>
             <p className={styles.testimonialText}>
-              "The wide product set and innovative open house tools have helped me close more deals in less time. BFFLender truly lives up to its name!"
+              &quot;The wide product set and innovative open house tools have helped me close more deals in less time. BFFLender truly lives up to its name!&quot;
             </p>
           </div>
         </div>
