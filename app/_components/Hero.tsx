@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState, useEffect, useRef } from 'react';
-import { ArrowRight, TrendingUp, CheckCircle, Award, Clock, DollarSign, Zap, Calculator, Users, Shield, Target } from 'lucide-react';
+import { ArrowRight, TrendingUp, CheckCircle, Award, Clock, DollarSign, Zap, Users, Shield, Target } from 'lucide-react';
 
 const Hero = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -39,7 +39,7 @@ const Hero = () => {
       clearInterval(metricInterval);
       clearTimeout(urgencyTimer);
     };
-  }, []);
+  }, [metrics.length]);
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -159,14 +159,14 @@ const Hero = () => {
               {/* Brand Promise with Psychological Trigger */}
               <div className="max-w-3xl mx-auto px-4">
                 <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white leading-tight mb-6">
-                  We'll Prove Our Performance
+                  We&apos;ll Prove Our Performance
                   <span className="block text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-emerald-300">
                     Or Send You to Vegas
                   </span>
                 </h2>
                 <p className="text-lg sm:text-xl text-slate-300 leading-relaxed mb-8">
                   30+ years building institutional-grade mortgage partnerships. Put your P&L where your mouth is — 
-                  if we can't beat your current performance, Vegas is on us.
+                  if we can&apos;t beat your current performance, Vegas is on us.
                 </p>
                 <div className="w-32 h-px bg-gradient-to-r from-transparent via-amber-400 to-transparent mx-auto"></div>
               </div>
@@ -192,8 +192,8 @@ const Hero = () => {
                 </div>
                 
                 <p className="text-slate-200 mb-6 leading-relaxed">
-                  Submit your current P&L. We'll analyze your performance and show you exactly how our 
-                  institutional model will improve your numbers. If we're wrong, we'll send you to Vegas.
+                  Submit your current P&L. We&apos;ll analyze your performance and show you exactly how our 
+                  institutional model will improve your numbers. If we&apos;re wrong, we&apos;ll send you to Vegas.
                 </p>
                 
                 <div className="space-y-4">
