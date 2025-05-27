@@ -1,4 +1,3 @@
-import BenefitsHeader from "./components/BenefitsHeader"
 import BenefitsHero from "./components/BenefitsHero"
 import WideProductSet from "./components/WideProductSet"
 import RadicalTransparency from "./components/RadicalTransparency"
@@ -6,12 +5,13 @@ import FlatOrganization from "./components/FlatOrganization"
 import PersonalBranding from "./components/PersonalBranding"
 import TechnologyAdvantage from "./components/TechnologyAdvantage"
 import BenefitsCTA from "./components/BenefitsCTA"
-import BenefitsFooter from "./components/BenefitsFooter"
+import Header from "../components/Header"
+import Footer from "../components/Footer"
 
 export default function BenefitsPage() {
   return (
     <div className="min-h-screen bg-white">
-      <BenefitsHeader />
+      <Header />
       <BenefitsHero />
       <WideProductSet />
       <RadicalTransparency />
@@ -19,7 +19,7 @@ export default function BenefitsPage() {
       <PersonalBranding />
       <TechnologyAdvantage />
       <BenefitsCTA />
-      <BenefitsFooter />
+      <Footer />
     </div>
   )
 }

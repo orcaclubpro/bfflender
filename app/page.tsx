@@ -1,6 +1,6 @@
 "use client"
 
-import HeroSection from "./components/HeroSection"
+import Hero from "./components/Hero"
 import PLChallengeSection from "./components/PLChallengeSection"
 import BenefitsSection from "./components/BenefitsSection"
 import ProofSection from "./components/ProofSection"
@@ -12,7 +12,7 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-white">
       <Header />
-      <HeroSection />
+      <Hero />
       <PLChallengeSection />
       <BenefitsSection />
       <ProofSection />

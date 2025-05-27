@@ -1,17 +1,15 @@
 "use client"
 
-import type React from "react"
-
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Checkbox } from "@/components/ui/checkbox"
-import { Phone, Mail, MapPin, Clock, ArrowLeft } from "lucide-react"
-import Link from "next/link"
 import { useState } from "react"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Textarea } from "@/components/ui/textarea"
+import { Label } from "@/components/ui/label"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Phone, Mail, MapPin, Clock, Calendar, Users, ArrowRight, CheckCircle } from "lucide-react"
+import Header from "../components/Header"
+import Footer from "../components/Footer"
+import BFFLogo from "../components/BFFLogo"
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -20,276 +18,317 @@ export default function ContactPage() {
     email: "",
     phone: "",
     company: "",
-    inquiryType: "",
-    message: "",
-    acceptChallenge: false,
+    preferredTime: "",
+    message: ""
   })
+  const [isSubmitted, setIsSubmitted] = useState(false)
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    // Handle form submission
-    console.log("Form submitted:", formData)
-    alert("Thank you for your interest! We'll be in touch within 24 hours.")
+    // Handle form submission here
+    setIsSubmitted(true)
   }
 
-  const handleInputChange = (field: string, value: string | boolean) => {
-    setFormData((prev) => ({ ...prev, [field]: value }))
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    })
   }
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Header */}
-      <header className="border-b border-gray-200 bg-white">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <Link href="/" className="flex items-center space-x-2">
-            <ArrowLeft className="h-5 w-5 text-gray-600" />
-            <div className="flex items-center space-x-2">
-              <div className="w-10 h-10 bg-gradient-to-br from-blue-900 to-blue-700 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-lg">BFF</span>
-              </div>
-              <div>
-                <h1 className="text-xl font-bold text-gray-900">BFFLender</h1>
-                <p className="text-xs text-gray-600">Powered by AllWestern Mortgage</p>
-              </div>
-            </div>
-          </Link>
-        </div>
-      </header>
-
+      <Header />
+      
       {/* Hero Section */}
-      <section className="py-16 bg-gradient-to-br from-blue-900 to-blue-800 text-white">
-        <div className="container mx-auto px-4">
+      <section className="bg-gradient-to-br from-emerald-950 via-slate-900 to-emerald-900 text-white py-20 relative overflow-hidden">
+        {/* Background Effects */}
+        <div className="absolute inset-0">
+          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-emerald-900/20 to-transparent"></div>
+          <div className="absolute top-20 right-20 w-64 h-64 bg-amber-500/5 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-20 left-20 w-80 h-80 bg-emerald-500/5 rounded-full blur-3xl"></div>
+        </div>
+
+        <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">
-              Ready to Take the <span className="text-orange-400">P&L Challenge?</span>
+            <div className="mb-8">
+              <BFFLogo 
+                size="lg" 
+                variant="light" 
+                showText={true}
+                className="justify-center mb-6"
+              />
+            </div>
+            <h1 className="text-4xl sm:text-5xl font-bold mb-6">
+              Schedule Your Strategy Session
             </h1>
-            <p className="text-xl text-blue-100 mb-8">
-              Get in touch with our mortgage experts and discover how we can improve your bottom line
+            <p className="text-xl text-slate-300 mb-8 max-w-3xl mx-auto leading-relaxed">
+              Ready to discover how BFFLender can transform your mortgage business? 
+              Let's discuss your goals and show you exactly how our institutional model works.
             </p>
+            <div className="w-32 h-px bg-gradient-to-r from-transparent via-amber-400 to-transparent mx-auto"></div>
           </div>
         </div>
       </section>
 
-      {/* Contact Form & Info */}
-      <section className="py-16 bg-gray-50">
+      {/* Contact Form & Info Section */}
+      <section className="py-20 bg-gradient-to-br from-white via-emerald-50/30 to-amber-50/50">
         <div className="container mx-auto px-4">
-          <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-12">
-            {/* Contact Form */}
-            <Card className="shadow-lg">
-              <CardHeader>
-                <CardTitle className="text-2xl text-gray-900">Start Your P&L Challenge</CardTitle>
-                <CardDescription className="text-lg">
-                  Fill out the form below and we'll analyze your current P&L within 48 hours
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  <div className="grid md:grid-cols-2 gap-4">
-                    <div>
-                      <Label htmlFor="firstName">First Name *</Label>
-                      <Input
-                        id="firstName"
-                        value={formData.firstName}
-                        onChange={(e) => handleInputChange("firstName", e.target.value)}
-                        required
-                        className="mt-1"
-                      />
-                    </div>
-                    <div>
-                      <Label htmlFor="lastName">Last Name *</Label>
-                      <Input
-                        id="lastName"
-                        value={formData.lastName}
-                        onChange={(e) => handleInputChange("lastName", e.target.value)}
-                        required
-                        className="mt-1"
-                      />
-                    </div>
-                  </div>
+          <div className="max-w-7xl mx-auto">
+            <div className="grid lg:grid-cols-2 gap-16 items-start">
+              
+              {/* Contact Form */}
+              <div>
+                <Card className="border-emerald-100 shadow-xl">
+                  <CardHeader className="bg-gradient-to-r from-emerald-50 to-amber-50 border-b border-emerald-100">
+                    <CardTitle className="text-2xl text-slate-900 flex items-center gap-3">
+                      <Calendar className="w-6 h-6 text-emerald-600" />
+                      Book Your Session
+                    </CardTitle>
+                    <p className="text-slate-600">
+                      Fill out the form below and we'll get back to you within 2 hours to schedule your personalized strategy session.
+                    </p>
+                  </CardHeader>
+                  <CardContent className="p-8">
+                    {!isSubmitted ? (
+                      <form onSubmit={handleSubmit} className="space-y-6">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                          <div>
+                            <Label htmlFor="firstName" className="text-slate-700 font-medium">
+                              First Name *
+                            </Label>
+                            <Input
+                              id="firstName"
+                              name="firstName"
+                              value={formData.firstName}
+                              onChange={handleInputChange}
+                              required
+                              className="border-slate-200 focus:border-emerald-500 focus:ring-emerald-500 rounded-xl h-12"
+                              placeholder="Your first name"
+                            />
+                          </div>
+                          <div>
+                            <Label htmlFor="lastName" className="text-slate-700 font-medium">
+                              Last Name *
+                            </Label>
+                            <Input
+                              id="lastName"
+                              name="lastName"
+                              value={formData.lastName}
+                              onChange={handleInputChange}
+                              required
+                              className="border-slate-200 focus:border-emerald-500 focus:ring-emerald-500 rounded-xl h-12"
+                              placeholder="Your last name"
+                            />
+                          </div>
+                        </div>
 
-                  <div>
-                    <Label htmlFor="email">Email Address *</Label>
-                    <Input
-                      id="email"
-                      type="email"
-                      value={formData.email}
-                      onChange={(e) => handleInputChange("email", e.target.value)}
-                      required
-                      className="mt-1"
-                    />
-                  </div>
+                        <div>
+                          <Label htmlFor="email" className="text-slate-700 font-medium">
+                            Email Address *
+                          </Label>
+                          <Input
+                            id="email"
+                            name="email"
+                            type="email"
+                            value={formData.email}
+                            onChange={handleInputChange}
+                            required
+                            className="border-slate-200 focus:border-emerald-500 focus:ring-emerald-500 rounded-xl h-12"
+                            placeholder="your.email@company.com"
+                          />
+                        </div>
 
-                  <div>
-                    <Label htmlFor="phone">Phone Number *</Label>
-                    <Input
-                      id="phone"
-                      type="tel"
-                      value={formData.phone}
-                      onChange={(e) => handleInputChange("phone", e.target.value)}
-                      required
-                      className="mt-1"
-                    />
-                  </div>
+                        <div>
+                          <Label htmlFor="phone" className="text-slate-700 font-medium">
+                            Phone Number
+                          </Label>
+                          <Input
+                            id="phone"
+                            name="phone"
+                            type="tel"
+                            value={formData.phone}
+                            onChange={handleInputChange}
+                            className="border-slate-200 focus:border-emerald-500 focus:ring-emerald-500 rounded-xl h-12"
+                            placeholder="(555) 123-4567"
+                          />
+                        </div>
 
-                  <div>
-                    <Label htmlFor="company">Company/Organization</Label>
-                    <Input
-                      id="company"
-                      value={formData.company}
-                      onChange={(e) => handleInputChange("company", e.target.value)}
-                      className="mt-1"
-                    />
-                  </div>
+                        <div>
+                          <Label htmlFor="company" className="text-slate-700 font-medium">
+                            Company/Brokerage
+                          </Label>
+                          <Input
+                            id="company"
+                            name="company"
+                            value={formData.company}
+                            onChange={handleInputChange}
+                            className="border-slate-200 focus:border-emerald-500 focus:ring-emerald-500 rounded-xl h-12"
+                            placeholder="Your current company"
+                          />
+                        </div>
 
-                  <div>
-                    <Label htmlFor="inquiryType">Type of Inquiry *</Label>
-                    <Select onValueChange={(value) => handleInputChange("inquiryType", value)}>
-                      <SelectTrigger className="mt-1">
-                        <SelectValue placeholder="Select inquiry type" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="pl-challenge">P&L Challenge</SelectItem>
-                        <SelectItem value="partnership">Partnership Opportunity</SelectItem>
-                        <SelectItem value="technology">Technology Solutions</SelectItem>
-                        <SelectItem value="general">General Information</SelectItem>
-                        <SelectItem value="other">Other</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
+                        <div>
+                          <Label htmlFor="preferredTime" className="text-slate-700 font-medium">
+                            Preferred Meeting Time
+                          </Label>
+                          <Input
+                            id="preferredTime"
+                            name="preferredTime"
+                            value={formData.preferredTime}
+                            onChange={handleInputChange}
+                            className="border-slate-200 focus:border-emerald-500 focus:ring-emerald-500 rounded-xl h-12"
+                            placeholder="e.g., Weekday mornings, Tuesday afternoons"
+                          />
+                        </div>
 
-                  <div>
-                    <Label htmlFor="message">Message</Label>
-                    <Textarea
-                      id="message"
-                      value={formData.message}
-                      onChange={(e) => handleInputChange("message", e.target.value)}
-                      placeholder="Tell us about your current mortgage business and what you'd like to achieve..."
-                      className="mt-1 min-h-[120px]"
-                    />
-                  </div>
+                        <div>
+                          <Label htmlFor="message" className="text-slate-700 font-medium">
+                            Tell Us About Your Goals
+                          </Label>
+                          <Textarea
+                            id="message"
+                            name="message"
+                            value={formData.message}
+                            onChange={handleInputChange}
+                            className="border-slate-200 focus:border-emerald-500 focus:ring-emerald-500 rounded-xl min-h-[120px]"
+                            placeholder="What are your biggest challenges? What would you like to achieve?"
+                          />
+                        </div>
 
-                  <div className="flex items-center space-x-2">
-                    <Checkbox
-                      id="acceptChallenge"
-                      checked={formData.acceptChallenge}
-                      onCheckedChange={(checked) => handleInputChange("acceptChallenge", checked as boolean)}
-                    />
-                    <Label htmlFor="acceptChallenge" className="text-sm">
-                      I'm ready to accept the P&L Challenge and provide my current P&L for comparison
-                    </Label>
-                  </div>
-
-                  <Button type="submit" className="w-full bg-orange-600 hover:bg-orange-700 text-white py-3">
-                    Submit P&L Challenge Request
-                  </Button>
-                </form>
-              </CardContent>
-            </Card>
-
-            {/* Contact Information */}
-            <div className="space-y-8">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-xl">Contact Information</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="flex items-center space-x-3">
-                    <Phone className="h-5 w-5 text-blue-900" />
-                    <div>
-                      <p className="font-medium">Phone</p>
-                      <p className="text-gray-600">(555) 123-4567</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center space-x-3">
-                    <Mail className="h-5 w-5 text-blue-900" />
-                    <div>
-                      <p className="font-medium">Email</p>
-                      <p className="text-gray-600">challenge@bfflender.com</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center space-x-3">
-                    <MapPin className="h-5 w-5 text-blue-900" />
-                    <div>
-                      <p className="font-medium">Address</p>
-                      <p className="text-gray-600">
-                        123 Mortgage Way
-                        <br />
-                        Las Vegas, NV 89101
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-center space-x-3">
-                    <Clock className="h-5 w-5 text-blue-900" />
-                    <div>
-                      <p className="font-medium">Business Hours</p>
-                      <p className="text-gray-600">
-                        Mon-Fri: 8:00 AM - 6:00 PM PST
-                        <br />
-                        Sat: 9:00 AM - 2:00 PM PST
-                      </p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="bg-gradient-to-br from-orange-600 to-orange-700 text-white">
-                <CardHeader>
-                  <CardTitle className="text-xl">The P&L Challenge Promise</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-orange-100 mb-4">
-                    We're so confident in our mortgage solutions that if we can't improve your P&L, we'll give you two
-                    tickets to a Las Vegas show of your choice.
-                  </p>
-                  <ul className="space-y-2 text-orange-100">
-                    <li>• No risk to you</li>
-                    <li>• Detailed P&L analysis</li>
-                    <li>• 48-hour turnaround</li>
-                    <li>• Expert consultation included</li>
-                  </ul>
-                </CardContent>
-              </Card>
-
-              <Card className="bg-blue-900 text-white">
-                <CardHeader>
-                  <CardTitle className="text-xl">Why Choose AllWestern Mortgage?</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <ul className="space-y-2 text-blue-100">
-                    <li>• 30+ years of industry experience</li>
-                    <li>• Complete transparency in all dealings</li>
-                    <li>• Flat organizational structure</li>
-                    <li>• Personal branding support</li>
-                    <li>• Cutting-edge technology tools</li>
-                    <li>• Wide range of mortgage products</li>
-                  </ul>
-                </CardContent>
-              </Card>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="bg-gray-900 text-white py-12">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto text-center">
-            <div className="flex items-center justify-center space-x-2 mb-4">
-              <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-blue-800 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold">BFF</span>
+                        <Button
+                          type="submit"
+                          className="w-full bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-white font-bold py-4 rounded-xl shadow-lg hover:shadow-amber-500/30 transition-all duration-300 hover:scale-105"
+                        >
+                          Schedule My Strategy Session
+                          <ArrowRight className="ml-2 h-5 w-5" />
+                        </Button>
+                      </form>
+                    ) : (
+                      <div className="text-center py-8">
+                        <div className="w-16 h-16 bg-gradient-to-r from-emerald-500 to-amber-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                          <CheckCircle className="h-8 w-8 text-white" />
+                        </div>
+                        <h3 className="text-2xl font-bold text-slate-900 mb-4">
+                          Request Submitted!
+                        </h3>
+                        <p className="text-slate-600 mb-6">
+                          Thank you for your interest in BFFLender. We'll contact you within 2 hours to schedule your personalized strategy session.
+                        </p>
+                        <Button
+                          onClick={() => setIsSubmitted(false)}
+                          variant="outline"
+                          className="border-emerald-300 text-emerald-700 hover:bg-emerald-50"
+                        >
+                          Submit Another Request
+                        </Button>
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
               </div>
-              <span className="text-xl font-bold">BFFLender</span>
+
+              {/* Contact Information */}
+              <div className="space-y-8">
+                {/* Contact Details */}
+                <Card className="border-emerald-100 shadow-lg">
+                  <CardHeader className="bg-gradient-to-r from-emerald-50 to-amber-50 border-b border-emerald-100">
+                    <CardTitle className="text-xl text-slate-900">
+                      Get In Touch
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="p-6 space-y-6">
+                    <div className="flex items-center gap-4">
+                      <div className="w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center">
+                        <Phone className="w-6 h-6 text-emerald-600" />
+                      </div>
+                      <div>
+                        <p className="font-semibold text-slate-900">Phone</p>
+                        <p className="text-slate-600">(555) 123-4567</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-4">
+                      <div className="w-12 h-12 bg-amber-100 rounded-xl flex items-center justify-center">
+                        <Mail className="w-6 h-6 text-amber-600" />
+                      </div>
+                      <div>
+                        <p className="font-semibold text-slate-900">Email</p>
+                        <p className="text-slate-600">strategy@bfflender.com</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-4">
+                      <div className="w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center">
+                        <MapPin className="w-6 h-6 text-emerald-600" />
+                      </div>
+                      <div>
+                        <p className="font-semibold text-slate-900">Location</p>
+                        <p className="text-slate-600">Las Vegas, Nevada</p>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* What to Expect */}
+                <Card className="border-amber-100 shadow-lg">
+                  <CardHeader className="bg-gradient-to-r from-amber-50 to-emerald-50 border-b border-amber-100">
+                    <CardTitle className="text-xl text-slate-900 flex items-center gap-3">
+                      <Users className="w-6 h-6 text-amber-600" />
+                      What to Expect
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="p-6">
+                    <ul className="space-y-4">
+                      <li className="flex items-start gap-3">
+                        <div className="w-2 h-2 bg-emerald-400 rounded-full mt-2 flex-shrink-0"></div>
+                        <div>
+                          <p className="font-semibold text-slate-900">30-45 Minute Session</p>
+                          <p className="text-slate-600 text-sm">Deep dive into your current business model</p>
+                        </div>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <div className="w-2 h-2 bg-amber-400 rounded-full mt-2 flex-shrink-0"></div>
+                        <div>
+                          <p className="font-semibold text-slate-900">Custom Analysis</p>
+                          <p className="text-slate-600 text-sm">Personalized recommendations for growth</p>
+                        </div>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <div className="w-2 h-2 bg-emerald-400 rounded-full mt-2 flex-shrink-0"></div>
+                        <div>
+                          <p className="font-semibold text-slate-900">No Pressure</p>
+                          <p className="text-slate-600 text-sm">Educational session with actionable insights</p>
+                        </div>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <div className="w-2 h-2 bg-amber-400 rounded-full mt-2 flex-shrink-0"></div>
+                        <div>
+                          <p className="font-semibold text-slate-900">Next Steps</p>
+                          <p className="text-slate-600 text-sm">Clear roadmap if you choose to proceed</p>
+                        </div>
+                      </li>
+                    </ul>
+                  </CardContent>
+                </Card>
+
+                {/* Response Time */}
+                <Card className="border-emerald-100 shadow-lg bg-gradient-to-r from-emerald-50 to-amber-50">
+                  <CardContent className="p-6 text-center">
+                    <Clock className="w-12 h-12 text-emerald-600 mx-auto mb-4" />
+                    <h3 className="text-lg font-bold text-slate-900 mb-2">
+                      Quick Response Guarantee
+                    </h3>
+                    <p className="text-slate-600">
+                      We'll contact you within 2 hours during business hours to schedule your session at a time that works for you.
+                    </p>
+                  </CardContent>
+                </Card>
+              </div>
             </div>
-            <p className="text-gray-400 mb-4">
-              Powered by AllWestern Mortgage - Creating clients for life through superior service and innovative
-              solutions.
-            </p>
-            <p className="text-gray-400">
-              &copy; {new Date().getFullYear()} BFFLender. Powered by AllWestern Mortgage. All rights reserved.
-            </p>
           </div>
         </div>
-      </footer>
+      </section>
+
+      <Footer />
     </div>
   )
 }

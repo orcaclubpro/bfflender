@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { X, Send, Bot, User, CheckCircle, Clock, Shield, ArrowLeft, RefreshCw, Lightbulb, AlertCircle, HelpCircle } from "lucide-react"
 import { useState, useEffect, useRef, useCallback } from "react"
+import BFFLogo from "./BFFLogo"
 
 interface Message {
   id: string
@@ -403,15 +404,18 @@ export default function PLChatbot({ isOpen, onClose }: PLChatbotProps) {
   return (
     <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
       <div className="bg-white rounded-3xl shadow-2xl w-full max-w-2xl h-[90vh] flex flex-col overflow-hidden">
-        {/* Fixed Header */}
-        <div className="flex items-center justify-between p-6 border-b border-gray-200 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-t-3xl flex-shrink-0">
+        {/* Fixed Header with BFFLender Branding */}
+        <div className="flex items-center justify-between p-6 border-b border-emerald-200 bg-gradient-to-r from-emerald-600 to-emerald-700 text-white rounded-t-3xl flex-shrink-0">
           <div className="flex items-center space-x-4">
-            <div className="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center backdrop-blur-sm">
-              <Bot className="h-7 w-7" />
-            </div>
+            <BFFLogo 
+              size="sm" 
+              variant="light" 
+              showText={false}
+              className="bg-white/20 rounded-2xl p-2 backdrop-blur-sm"
+            />
             <div>
               <h3 className="text-xl font-bold">P&L Challenge Assistant</h3>
-              <p className="text-blue-100 text-sm">Let's unlock your potential!</p>
+              <p className="text-emerald-100 text-sm">Let's unlock your potential!</p>
             </div>
           </div>
           <div className="flex items-center space-x-2">
@@ -420,7 +424,7 @@ export default function PLChatbot({ isOpen, onClose }: PLChatbotProps) {
                 variant="ghost" 
                 size="sm" 
                 onClick={() => setShowHelp(!showHelp)}
-                className="text-white hover:bg-white/20 p-3 rounded-xl"
+                className="text-white hover:bg-white/20 p-3 rounded-xl transition-all duration-300"
                 title="Get help"
               >
                 <HelpCircle className="h-5 w-5" />
@@ -430,7 +434,7 @@ export default function PLChatbot({ isOpen, onClose }: PLChatbotProps) {
               variant="ghost" 
               size="sm" 
               onClick={onClose} 
-              className="text-white hover:bg-white/20 p-3 rounded-xl"
+              className="text-white hover:bg-white/20 p-3 rounded-xl transition-all duration-300"
             >
               <X className="h-6 w-6" />
             </Button>
@@ -439,12 +443,12 @@ export default function PLChatbot({ isOpen, onClose }: PLChatbotProps) {
 
         {/* Fixed Help Panel */}
         {showHelp && (
-          <div className="px-6 py-4 bg-blue-50 border-b border-blue-200 flex-shrink-0">
+          <div className="px-6 py-4 bg-emerald-50 border-b border-emerald-200 flex-shrink-0">
             <div className="flex items-start space-x-3">
-              <Lightbulb className="h-5 w-5 text-blue-600 mt-0.5 flex-shrink-0" />
-              <div className="text-sm text-blue-800">
+              <Lightbulb className="h-5 w-5 text-emerald-600 mt-0.5 flex-shrink-0" />
+              <div className="text-sm text-emerald-800">
                 <p className="font-semibold mb-1">Quick Help:</p>
-                <ul className="space-y-1 text-blue-700">
+                <ul className="space-y-1 text-emerald-700">
                   <li>• Type "back" to go to the previous question</li>
                   <li>• Type "help" for question-specific guidance</li>
                   <li>• Use the suggestions below for quick answers</li>
@@ -456,13 +460,13 @@ export default function PLChatbot({ isOpen, onClose }: PLChatbotProps) {
         )}
 
         {/* Fixed Progress Bar */}
-        <div className="px-6 py-4 bg-gray-50 border-b border-gray-200 flex-shrink-0">
+        <div className="px-6 py-4 bg-slate-50 border-b border-slate-200 flex-shrink-0">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-sm font-medium text-gray-600">
+            <span className="text-sm font-medium text-slate-600">
               Step {Math.min(currentStep + 1, chatSteps.length)} of {chatSteps.length}
             </span>
             <div className="flex items-center space-x-2">
-              <span className="text-sm text-gray-500">
+              <span className="text-sm text-slate-500">
                 {Math.round(((currentStep + 1) / chatSteps.length) * 100)}% Complete
               </span>
               {currentStep > 0 && !isCompleted && (
@@ -474,7 +478,7 @@ export default function PLChatbot({ isOpen, onClose }: PLChatbotProps) {
                     const prevQuestion = chatSteps[currentStep - 1].question
                     addBotMessage(`Going back: ${prevQuestion}`)
                   }}
-                  className="text-gray-500 hover:text-gray-700 p-1"
+                  className="text-slate-500 hover:text-slate-700 p-1 hover:bg-slate-100 rounded-lg transition-all duration-300"
                   title="Go back"
                 >
                   <ArrowLeft className="h-4 w-4" />
@@ -482,16 +486,16 @@ export default function PLChatbot({ isOpen, onClose }: PLChatbotProps) {
               )}
             </div>
           </div>
-          <div className="w-full bg-gray-200 rounded-full h-2">
+          <div className="w-full bg-slate-200 rounded-full h-2">
             <div
-              className="bg-gradient-to-r from-blue-500 to-blue-600 h-2 rounded-full transition-all duration-500"
+              className="bg-gradient-to-r from-emerald-500 to-amber-500 h-2 rounded-full transition-all duration-500"
               style={{ width: `${((currentStep + 1) / chatSteps.length) * 100}%` }}
             ></div>
           </div>
         </div>
 
         {/* Fixed Messages Container */}
-        <div className="flex-1 overflow-y-auto p-6 space-y-4 bg-gradient-to-b from-white to-gray-50/30">
+        <div className="flex-1 overflow-y-auto p-6 space-y-4 bg-gradient-to-b from-white to-slate-50/30">
           {messages.map((message) => (
             <div 
               key={message.id} 
@@ -501,18 +505,18 @@ export default function PLChatbot({ isOpen, onClose }: PLChatbotProps) {
                 <div
                   className={`${
                     message.type === "user" 
-                      ? "bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-2xl rounded-br-md px-4 py-3 shadow-sm" 
+                      ? "bg-gradient-to-r from-emerald-600 to-emerald-700 text-white rounded-2xl rounded-br-md px-4 py-3 shadow-sm" 
                       : message.type === "system"
                       ? message.isError 
                         ? "bg-red-50 text-red-800 border border-red-200 rounded-2xl px-4 py-3"
-                        : "bg-blue-50 text-blue-800 border border-blue-200 rounded-2xl px-4 py-3"
-                      : "bg-white text-gray-800 rounded-2xl rounded-bl-md px-4 py-3 shadow-sm border border-gray-100"
+                        : "bg-emerald-50 text-emerald-800 border border-emerald-200 rounded-2xl px-4 py-3"
+                      : "bg-white text-slate-800 rounded-2xl rounded-bl-md px-4 py-3 shadow-sm border border-slate-100"
                   }`}
                 >
                   <div className="flex items-start space-x-3">
                     {message.type === "bot" && (
-                      <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                        <Bot className="h-4 w-4 text-blue-600" />
+                      <div className="w-8 h-8 bg-emerald-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <Bot className="h-4 w-4 text-emerald-600" />
                       </div>
                     )}
                     {message.type === "user" && (
@@ -521,11 +525,11 @@ export default function PLChatbot({ isOpen, onClose }: PLChatbotProps) {
                       </div>
                     )}
                     {message.type === "system" && (
-                      <div className={`w-8 h-8 ${message.isError ? 'bg-red-100' : 'bg-blue-100'} rounded-full flex items-center justify-center flex-shrink-0 mt-0.5`}>
+                      <div className={`w-8 h-8 ${message.isError ? 'bg-red-100' : 'bg-emerald-100'} rounded-full flex items-center justify-center flex-shrink-0 mt-0.5`}>
                         {message.isError ? (
                           <AlertCircle className="h-4 w-4 text-red-600" />
                         ) : (
-                          <Lightbulb className="h-4 w-4 text-blue-600" />
+                          <Lightbulb className="h-4 w-4 text-emerald-600" />
                         )}
                       </div>
                     )}
@@ -542,7 +546,7 @@ export default function PLChatbot({ isOpen, onClose }: PLChatbotProps) {
                         variant="outline"
                         size="sm"
                         onClick={() => handleSubmit(suggestion)}
-                        className="text-xs px-3 py-1 h-auto bg-white/80 hover:bg-blue-50 border-blue-200 text-blue-700 rounded-full"
+                        className="text-xs px-3 py-1 h-auto bg-white/80 hover:bg-emerald-50 border-emerald-200 text-emerald-700 rounded-full transition-all duration-300 hover:scale-105"
                         disabled={isTyping}
                       >
                         {suggestion}
@@ -551,7 +555,7 @@ export default function PLChatbot({ isOpen, onClose }: PLChatbotProps) {
                   </div>
                 )}
                 
-                <div className="mt-2 text-xs text-gray-400 px-3">
+                <div className="mt-2 text-xs text-slate-400 px-3">
                   {message.timestamp.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
                 </div>
               </div>
@@ -560,19 +564,19 @@ export default function PLChatbot({ isOpen, onClose }: PLChatbotProps) {
 
           {isTyping && (
             <div className="flex justify-start">
-              <div className="bg-white text-gray-800 rounded-2xl rounded-bl-md px-4 py-3 shadow-sm border border-gray-100">
+              <div className="bg-white text-slate-800 rounded-2xl rounded-bl-md px-4 py-3 shadow-sm border border-slate-100">
                 <div className="flex items-center space-x-3">
-                  <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                    <Bot className="h-4 w-4 text-blue-600" />
+                  <div className="w-8 h-8 bg-emerald-100 rounded-full flex items-center justify-center">
+                    <Bot className="h-4 w-4 text-emerald-600" />
                   </div>
                   <div className="flex space-x-1">
-                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
+                    <div className="w-2 h-2 bg-emerald-400 rounded-full animate-bounce"></div>
                     <div
-                      className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                      className="w-2 h-2 bg-emerald-400 rounded-full animate-bounce"
                       style={{ animationDelay: "0.1s" }}
                     ></div>
                     <div
-                      className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                      className="w-2 h-2 bg-emerald-400 rounded-full animate-bounce"
                       style={{ animationDelay: "0.2s" }}
                     ></div>
                   </div>
@@ -585,7 +589,7 @@ export default function PLChatbot({ isOpen, onClose }: PLChatbotProps) {
 
         {/* Fixed Input Area - Always Visible */}
         {currentStep < chatSteps.length && !isCompleted && (
-          <div className="p-6 border-t border-gray-200 bg-white rounded-b-3xl flex-shrink-0">
+          <div className="p-6 border-t border-slate-200 bg-white rounded-b-3xl flex-shrink-0">
             <ChatInput
               step={getCurrentStep()}
               onSubmit={handleSubmit}
@@ -598,39 +602,30 @@ export default function PLChatbot({ isOpen, onClose }: PLChatbotProps) {
 
         {/* Fixed Completion State */}
         {isCompleted && (
-          <div className="p-6 border-t border-gray-200 bg-gradient-to-r from-emerald-50 to-emerald-100 rounded-b-3xl flex-shrink-0">
-            <div className="text-center">
-              <div className="w-16 h-16 bg-emerald-500 rounded-full flex items-center justify-center mx-auto mb-4">
+          <div className="p-6 border-t border-slate-200 bg-gradient-to-r from-emerald-50 to-amber-50 rounded-b-3xl flex-shrink-0">
+            <div className="text-center space-y-4">
+              <div className="w-16 h-16 bg-gradient-to-r from-emerald-500 to-amber-500 rounded-full flex items-center justify-center mx-auto">
                 <CheckCircle className="h-8 w-8 text-white" />
               </div>
-              <h4 className="text-xl font-bold text-emerald-800 mb-2">Challenge Submitted!</h4>
-              <p className="text-emerald-700 mb-6">
-                Our team will analyze your P&L and get back to you within 48 hours.
+              <h4 className="text-xl font-bold text-slate-900">Challenge Submitted!</h4>
+              <p className="text-slate-600">
+                Your P&L analysis will be ready within 48 hours. We'll email you at{" "}
+                <span className="font-semibold text-emerald-600">{formData.email}</span>
               </p>
-              <div className="grid grid-cols-2 gap-4 text-sm mb-6">
-                <div className="flex items-center space-x-2 text-emerald-700">
-                  <Clock className="h-4 w-4" />
-                  <span>48-hour analysis</span>
-                </div>
-                <div className="flex items-center space-x-2 text-emerald-700">
-                  <Shield className="h-4 w-4" />
-                  <span>100% confidential</span>
-                </div>
-              </div>
               <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                <Button
+                <Button 
+                  onClick={onClose}
+                  className="bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600 text-white font-bold px-6 py-3 rounded-xl shadow-lg hover:shadow-emerald-500/30 transition-all duration-300 hover:scale-105"
+                >
+                  Close
+                </Button>
+                <Button 
                   onClick={handleRestart}
                   variant="outline"
-                  className="border-emerald-300 text-emerald-700 hover:bg-emerald-50"
+                  className="border-emerald-300 text-emerald-700 hover:bg-emerald-50 px-6 py-3 rounded-xl transition-all duration-300"
                 >
                   <RefreshCw className="h-4 w-4 mr-2" />
                   Start New Challenge
-                </Button>
-                <Button
-                  onClick={onClose}
-                  className="bg-emerald-600 hover:bg-emerald-700 text-white"
-                >
-                  Close
                 </Button>
               </div>
             </div>
@@ -641,6 +636,7 @@ export default function PLChatbot({ isOpen, onClose }: PLChatbotProps) {
   )
 }
 
+// Chat Input Component with BFFLender styling
 interface ChatInputProps {
   step: any
   onSubmit: (value: string) => void
@@ -654,48 +650,34 @@ function ChatInput({ step, onSubmit, value, onError, disabled }: ChatInputProps)
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    if (disabled) return
-    
     if (inputValue.trim() || !step.validation) {
       onSubmit(inputValue.trim())
       setInputValue("")
     } else {
-      onError("This field is required. Please enter a value.")
+      onError("This field is required.")
     }
   }
 
   const handleSuggestionClick = (suggestion: string) => {
-    if (disabled) return
-    
-    if (step.type === "number") {
-      // Extract number from suggestion if it's a range
-      const match = suggestion.match(/\$?([\d,]+)/);
-      if (match) {
-        const numValue = match[1].replace(/,/g, '');
-        setInputValue(numValue);
-        return;
-      }
-    }
-    onSubmit(suggestion);
+    onSubmit(suggestion)
   }
+
+  useEffect(() => {
+    setInputValue(value)
+  }, [value])
 
   if (step.type === "select") {
     return (
       <div className="space-y-4">
-        <Label className="text-base font-semibold text-gray-800">Choose an option:</Label>
-        {step.helpText && (
-          <p className="text-sm text-gray-600 bg-blue-50 p-3 rounded-lg border border-blue-200">
-            💡 {step.helpText}
-          </p>
-        )}
-        <div className="grid grid-cols-1 gap-3">
-          {step.options.map((option: string) => (
+        <Label className="text-slate-700 font-medium">{step.question}</Label>
+        <div className="grid grid-cols-1 gap-2">
+          {step.options.map((option: string, idx: number) => (
             <Button
-              key={option}
+              key={idx}
               variant="outline"
-              disabled={disabled}
-              className="justify-start text-left h-auto p-4 hover:bg-blue-50 hover:border-blue-300 border-2 border-gray-200 text-gray-700 font-medium rounded-xl disabled:opacity-50 disabled:cursor-not-allowed"
               onClick={() => onSubmit(option)}
+              disabled={disabled}
+              className="justify-start text-left p-4 h-auto border-slate-200 hover:border-emerald-300 hover:bg-emerald-50 text-slate-700 transition-all duration-300"
             >
               {option}
             </Button>
@@ -705,97 +687,68 @@ function ChatInput({ step, onSubmit, value, onError, disabled }: ChatInputProps)
     )
   }
 
-  if (step.type === "textarea") {
-    return (
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <Label className="text-base font-semibold text-gray-800">Your answer:</Label>
+  return (
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <div>
+        <Label htmlFor="chat-input" className="text-slate-700 font-medium mb-2 block">
+          {step.question}
+        </Label>
+        {step.type === "textarea" ? (
+          <Textarea
+            id="chat-input"
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
+            placeholder={step.placeholder}
+            disabled={disabled}
+            className="min-h-[100px] border-slate-200 focus:border-emerald-500 focus:ring-emerald-500 rounded-xl"
+          />
+        ) : (
+          <Input
+            id="chat-input"
+            type={step.type}
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
+            placeholder={step.placeholder}
+            disabled={disabled}
+            className="border-slate-200 focus:border-emerald-500 focus:ring-emerald-500 rounded-xl h-12"
+          />
+        )}
         {step.helpText && (
-          <p className="text-sm text-gray-600 bg-blue-50 p-3 rounded-lg border border-blue-200">
-            💡 {step.helpText}
+          <p className="text-xs text-slate-500 mt-2 flex items-center gap-2">
+            <Lightbulb className="h-3 w-3" />
+            {step.helpText}
           </p>
         )}
-        <Textarea
-          value={inputValue}
-          onChange={(e) => setInputValue(e.target.value)}
-          placeholder={step.placeholder}
-          className="min-h-[100px] bg-white border-2 border-gray-200 rounded-xl disabled:opacity-50 disabled:cursor-not-allowed"
+      </div>
+      
+      <div className="flex items-center gap-3">
+        <Button
+          type="submit"
           disabled={disabled}
-          autoFocus={!disabled}
-        />
-        {step.suggestions && (
+          className="bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-white font-bold px-6 py-3 rounded-xl shadow-lg hover:shadow-amber-500/30 transition-all duration-300 hover:scale-105"
+        >
+          <Send className="h-4 w-4 mr-2" />
+          Send
+        </Button>
+        
+        {step.suggestions && step.suggestions.length > 0 && (
           <div className="flex flex-wrap gap-2">
-            <span className="text-sm text-gray-600 mr-2">Quick options:</span>
-            {step.suggestions.map((suggestion: string, idx: number) => (
+            {step.suggestions.slice(0, 3).map((suggestion: string, idx: number) => (
               <Button
                 key={idx}
                 type="button"
                 variant="outline"
                 size="sm"
-                disabled={disabled}
                 onClick={() => handleSuggestionClick(suggestion)}
-                className="text-xs px-3 py-1 h-auto bg-white hover:bg-blue-50 border-blue-200 text-blue-700 rounded-full disabled:opacity-50 disabled:cursor-not-allowed"
+                disabled={disabled}
+                className="text-xs border-emerald-200 text-emerald-700 hover:bg-emerald-50 rounded-full transition-all duration-300"
               >
                 {suggestion}
               </Button>
             ))}
           </div>
         )}
-        <Button 
-          type="submit" 
-          disabled={(!inputValue.trim() && step.validation) || disabled}
-          className="w-full bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white font-semibold py-4 text-base rounded-xl disabled:opacity-50 disabled:cursor-not-allowed" 
-        >
-          <Send className="h-5 w-5 mr-2" />
-          {disabled ? "Bot is typing..." : "Send Answer"}
-        </Button>
-      </form>
-    )
-  }
-
-  return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <Label className="text-base font-semibold text-gray-800">Your answer:</Label>
-      {step.helpText && (
-        <p className="text-sm text-gray-600 bg-blue-50 p-3 rounded-lg border border-blue-200">
-          💡 {step.helpText}
-        </p>
-      )}
-      <div className="flex space-x-3">
-        <Input
-          type={step.type}
-          value={inputValue}
-          onChange={(e) => setInputValue(e.target.value)}
-          placeholder={step.placeholder}
-          className="flex-1 bg-white border-2 border-gray-200 rounded-xl h-12 disabled:opacity-50 disabled:cursor-not-allowed"
-          disabled={disabled}
-          autoFocus={!disabled}
-        />
-        <Button 
-          type="submit" 
-          disabled={(!inputValue.trim() && step.validation) || disabled}
-          className="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white font-semibold px-6 py-3 rounded-xl disabled:opacity-50 disabled:cursor-not-allowed" 
-        >
-          <Send className="h-5 w-5" />
-        </Button>
       </div>
-      {step.suggestions && (
-        <div className="flex flex-wrap gap-2">
-          <span className="text-sm text-gray-600 mr-2">Quick options:</span>
-          {step.suggestions.map((suggestion: string, idx: number) => (
-            <Button
-              key={idx}
-              type="button"
-              variant="outline"
-              size="sm"
-              disabled={disabled}
-              onClick={() => handleSuggestionClick(suggestion)}
-              className="text-xs px-3 py-1 h-auto bg-white hover:bg-blue-50 border-blue-200 text-blue-700 rounded-full disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {suggestion}
-            </Button>
-          ))}
-        </div>
-      )}
     </form>
   )
 }

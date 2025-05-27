@@ -13,26 +13,26 @@ export default function PLChallengeSection() {
     <>
       <section
         id="challenge"
-        className="section-padding bg-gradient-to-br from-white via-navy-50/30 to-blue-50/50 relative overflow-hidden"
+        className="section-padding bg-gradient-to-br from-white via-emerald-50/30 to-amber-50/50 relative overflow-hidden"
       >
         {/* Background decoration */}
-        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-blue-50/50 to-transparent"></div>
+        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-emerald-50/50 to-transparent"></div>
         <div className="absolute top-20 right-20 w-64 h-64 bg-amber-100/30 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-20 left-20 w-80 h-80 bg-blue-100/30 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-20 left-20 w-80 h-80 bg-emerald-100/30 rounded-full blur-3xl"></div>
 
         <div className="container mx-auto container-padding relative z-10">
           <div className="max-w-7xl mx-auto content-spacing">
             <div className="text-center mb-20 animate-fade-in-up">
-              <div className="badge-warning mb-8 inline-flex items-center animate-pulse">
+              <div className="bg-amber-100 text-amber-800 px-6 py-3 rounded-full mb-8 inline-flex items-center animate-pulse font-semibold">
                 <Clock className="w-4 h-4 mr-2" />
                 Limited to 50 challenges per quarter
               </div>
 
-              <h2 className="text-display-md sm:text-display-lg lg:text-display-xl text-navy-900 mb-8">
-                Put Your P&L Where Your <span className="gradient-text-primary">Mouth Is</span>
+              <h2 className="text-display-md sm:text-display-lg lg:text-display-xl text-slate-900 mb-8">
+                Put Your P&L Where Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-amber-600">Mouth Is</span>
               </h2>
 
-              <p className="text-body-lg sm:text-xl text-navy-600 max-w-4xl mx-auto leading-relaxed">
+              <p className="text-body-lg sm:text-xl text-slate-600 max-w-4xl mx-auto leading-relaxed">
                 We're so confident in our broker model that we'll prove it with hard numbers. If we can't beat your
                 current P&L performance, we'll send you to Vegas on us.
               </p>
@@ -40,59 +40,59 @@ export default function PLChallengeSection() {
 
             {/* Enhanced Challenge Stats */}
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-20">
-              <Card className="card-feature text-center group">
+              <Card className="card-feature text-center group border-emerald-100 hover:border-emerald-300 transition-all duration-300">
                 <CardHeader className="pb-6">
-                  <div className="w-20 h-20 bg-gradient-to-br from-blue-500 to-blue-600 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300">
+                  <div className="w-20 h-20 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300">
                     <Users className="h-10 w-10 text-white" />
                   </div>
-                  <div className="text-5xl sm:text-6xl font-bold text-blue-600 mb-3">127</div>
-                  <CardTitle className="text-2xl text-navy-900">Brokers Challenged</CardTitle>
+                  <div className="text-5xl sm:text-6xl font-bold text-emerald-600 mb-3">127</div>
+                  <CardTitle className="text-2xl text-slate-900">Brokers Challenged</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-navy-600 font-medium">Total challenges completed this year</p>
+                  <p className="text-slate-600 font-medium">Total challenges completed this year</p>
                 </CardContent>
               </Card>
 
-              <Card className="card-feature text-center group">
+              <Card className="card-feature text-center group border-emerald-100 hover:border-emerald-300 transition-all duration-300">
                 <CardHeader className="pb-6">
                   <div className="w-20 h-20 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300">
                     <CheckCircle className="h-10 w-10 text-white" />
                   </div>
                   <div className="text-5xl sm:text-6xl font-bold text-emerald-600 mb-3">119</div>
-                  <CardTitle className="text-2xl text-navy-900">Switched to Us</CardTitle>
+                  <CardTitle className="text-2xl text-slate-900">Switched to Us</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-navy-600 font-medium">Chose BFFLender after seeing results</p>
+                  <p className="text-slate-600 font-medium">Chose BFFLender after seeing results</p>
                 </CardContent>
               </Card>
 
-              <Card className="card-feature text-center group sm:col-span-2 lg:col-span-1">
+              <Card className="card-feature text-center group sm:col-span-2 lg:col-span-1 border-amber-100 hover:border-amber-300 transition-all duration-300">
                 <CardHeader className="pb-6">
                   <div className="w-20 h-20 bg-gradient-to-br from-amber-500 to-amber-600 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300">
                     <Award className="h-10 w-10 text-white" />
                   </div>
                   <div className="text-5xl sm:text-6xl font-bold text-amber-600 mb-3">8</div>
-                  <CardTitle className="text-2xl text-navy-900">Vegas Trips Paid</CardTitle>
+                  <CardTitle className="text-2xl text-slate-900">Vegas Trips Paid</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-navy-600 font-medium">Times we couldn't beat their P&L</p>
+                  <p className="text-slate-600 font-medium">Times we couldn't beat their P&L</p>
                 </CardContent>
               </Card>
             </div>
 
             {/* Enhanced How It Works */}
             <div className="mb-20">
-              <h3 className="text-display-sm text-center text-navy-900 mb-16">How the Challenge Works</h3>
+              <h3 className="text-display-sm text-center text-slate-900 mb-16">How the Challenge Works</h3>
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                <Card className="card-elevated text-center group">
+                <Card className="card-elevated text-center group border-emerald-100 hover:border-emerald-300 hover:shadow-emerald-100/50 transition-all duration-300">
                   <CardHeader className="pb-8">
-                    <div className="w-24 h-24 bg-gradient-to-br from-blue-600 to-blue-700 rounded-3xl flex items-center justify-center mx-auto mb-8 shadow-xl group-hover:scale-105 transition-transform duration-300">
+                    <div className="w-24 h-24 bg-gradient-to-br from-emerald-600 to-emerald-700 rounded-3xl flex items-center justify-center mx-auto mb-8 shadow-xl group-hover:scale-105 transition-transform duration-300">
                       <span className="text-white font-bold text-3xl">1</span>
                     </div>
-                    <CardTitle className="text-2xl text-navy-900 mb-4">Submit Your P&L</CardTitle>
+                    <CardTitle className="text-2xl text-slate-900 mb-4">Submit Your P&L</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-6">
-                    <p className="text-navy-600 leading-relaxed">
+                    <p className="text-slate-600 leading-relaxed">
                       Confidential review of your current profit & loss statement with our expert team
                     </p>
                     <div className="inline-flex items-center space-x-3 bg-emerald-50 px-4 py-2 rounded-full">
@@ -102,38 +102,38 @@ export default function PLChallengeSection() {
                   </CardContent>
                 </Card>
 
-                <Card className="card-elevated text-center group">
+                <Card className="card-elevated text-center group border-amber-100 hover:border-amber-300 hover:shadow-amber-100/50 transition-all duration-300">
                   <CardHeader className="pb-8">
                     <div className="w-24 h-24 bg-gradient-to-br from-amber-500 to-amber-600 rounded-3xl flex items-center justify-center mx-auto mb-8 shadow-xl group-hover:scale-105 transition-transform duration-300">
                       <span className="text-white font-bold text-3xl">2</span>
                     </div>
-                    <CardTitle className="text-2xl text-navy-900 mb-4">Get Custom Analysis</CardTitle>
+                    <CardTitle className="text-2xl text-slate-900 mb-4">Get Custom Analysis</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-6">
-                    <p className="text-navy-600 leading-relaxed">
+                    <p className="text-slate-600 leading-relaxed">
                       Detailed comparison with our proven broker model and optimization recommendations
                     </p>
-                    <div className="inline-flex items-center space-x-3 bg-blue-50 px-4 py-2 rounded-full">
-                      <Clock className="h-5 w-5 text-blue-600" />
-                      <span className="text-blue-700 font-semibold text-sm">48-Hour Turnaround</span>
+                    <div className="inline-flex items-center space-x-3 bg-amber-50 px-4 py-2 rounded-full">
+                      <Clock className="h-5 w-5 text-amber-600" />
+                      <span className="text-amber-700 font-semibold text-sm">48-Hour Turnaround</span>
                     </div>
                   </CardContent>
                 </Card>
 
-                <Card className="card-elevated text-center group sm:col-span-2 lg:col-span-1">
+                <Card className="card-elevated text-center group sm:col-span-2 lg:col-span-1 border-emerald-100 hover:border-emerald-300 hover:shadow-emerald-100/50 transition-all duration-300">
                   <CardHeader className="pb-8">
                     <div className="w-24 h-24 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-3xl flex items-center justify-center mx-auto mb-8 shadow-xl group-hover:scale-105 transition-transform duration-300">
                       <span className="text-white font-bold text-3xl">3</span>
                     </div>
-                    <CardTitle className="text-2xl text-navy-900 mb-4">Win Either Way</CardTitle>
+                    <CardTitle className="text-2xl text-slate-900 mb-4">Win Either Way</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-6">
-                    <p className="text-navy-600 leading-relaxed">
+                    <p className="text-slate-600 leading-relaxed">
                       Better P&L with us, or Vegas show tickets on us - it's a guaranteed win
                     </p>
-                    <div className="inline-flex items-center space-x-3 bg-purple-50 px-4 py-2 rounded-full">
-                      <Target className="h-5 w-5 text-purple-600" />
-                      <span className="text-purple-700 font-semibold text-sm">Zero Risk Guarantee</span>
+                    <div className="inline-flex items-center space-x-3 bg-emerald-50 px-4 py-2 rounded-full">
+                      <Target className="h-5 w-5 text-emerald-600" />
+                      <span className="text-emerald-700 font-semibold text-sm">Zero Risk Guarantee</span>
                     </div>
                   </CardContent>
                 </Card>
@@ -153,7 +153,7 @@ export default function PLChallengeSection() {
                 <div className="flex flex-col sm:flex-row gap-6 justify-center max-w-lg mx-auto">
                   <Button
                     size="lg"
-                    className="bg-white text-amber-600 hover:bg-navy-50 font-bold px-10 py-5 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 text-lg"
+                    className="bg-white text-amber-600 hover:bg-slate-50 font-bold px-10 py-5 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 text-lg hover:scale-105"
                     onClick={() => setShowChatbot(true)}
                   >
                     <DollarSign className="mr-3 h-6 w-6" />
@@ -161,7 +161,7 @@ export default function PLChallengeSection() {
                   </Button>
                   <Button
                     size="lg"
-                    className="border-2 border-white text-white hover:bg-white/10 backdrop-blur-sm font-semibold px-10 py-5 rounded-2xl transition-all duration-300 text-lg"
+                    className="border-2 border-white text-white hover:bg-white/10 backdrop-blur-sm font-semibold px-10 py-5 rounded-2xl transition-all duration-300 text-lg hover:scale-105"
                   >
                     <TrendingUp className="mr-3 h-6 w-6" />
                     Schedule Consultation
