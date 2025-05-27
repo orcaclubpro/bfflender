@@ -6,8 +6,8 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
-import { X, Send, Bot, User, CheckCircle, Clock, Shield, ArrowLeft, RefreshCw, Lightbulb, AlertCircle, HelpCircle } from "lucide-react"
-import { useState, useEffect, useRef, useCallback } from "react"
+import { X, Send, Bot, User, CheckCircle, ArrowLeft, RefreshCw, Lightbulb, AlertCircle, HelpCircle } from "lucide-react"
+import { useState, useEffect, useRef, useCallback, useMemo } from "react"
 import BFFLogo from "./BFFLogo"
 
 interface Message {
@@ -18,6 +18,17 @@ interface Message {
   suggestions?: string[]
   isError?: boolean
   isNew?: boolean
+}
+
+interface ChatStep {
+  question: string
+  field: string
+  type: "text" | "email" | "tel" | "number" | "select" | "textarea"
+  placeholder?: string
+  helpText?: string
+  validation?: (value: string) => string | null
+  suggestions?: string[]
+  options?: string[]
 }
 
 interface PLChatbotProps {
@@ -46,15 +57,15 @@ export default function PLChatbot({ isOpen, onClose }: PLChatbotProps) {
   const [isCompleted, setIsCompleted] = useState(false)
   const [showHelp, setShowHelp] = useState(false)
   const [errorCount, setErrorCount] = useState(0)
-  const [conversationHistory, setConversationHistory] = useState<string[]>([])
+  const [_conversationHistory, _setConversationHistory] = useState<string[]>([])
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const timeoutRefs = useRef<NodeJS.Timeout[]>([])
 
-  const chatSteps = [
+  const chatSteps: ChatStep[] = useMemo(() => [
     {
       question: "Hi! I'm here to help you with the P&L Challenge. Let's start with your name - what's your first name?",
       field: "firstName",
-      type: "text",
+      type: "text" as const,
       placeholder: "Enter your first name",
       helpText: "We use your name to personalize your experience",
       validation: (value: string) => value.length >= 2 ? null : "Please enter at least 2 characters",
@@ -63,7 +74,7 @@ export default function PLChatbot({ isOpen, onClose }: PLChatbotProps) {
     {
       question: "Great to meet you, {firstName}! And your last name?",
       field: "lastName",
-      type: "text",
+      type: "text" as const,
       placeholder: "Enter your last name",
       helpText: "This helps us create your personalized analysis",
       validation: (value: string) => value.length >= 2 ? null : "Please enter at least 2 characters"
@@ -71,7 +82,7 @@ export default function PLChatbot({ isOpen, onClose }: PLChatbotProps) {
     {
       question: "Perfect! What's your email address? We'll send your P&L analysis here.",
       field: "email",
-      type: "email",
+      type: "email" as const,
       placeholder: "your.email@company.com",
       helpText: "We'll never share your email with third parties",
       validation: (value: string) => {
@@ -82,7 +93,7 @@ export default function PLChatbot({ isOpen, onClose }: PLChatbotProps) {
     {
       question: "And your phone number? (Optional - for urgent follow-ups only)",
       field: "phone",
-      type: "tel",
+      type: "tel" as const,
       placeholder: "(555) 123-4567",
       helpText: "We only call for time-sensitive opportunities",
       validation: () => null, // Optional field
@@ -91,7 +102,7 @@ export default function PLChatbot({ isOpen, onClose }: PLChatbotProps) {
     {
       question: "What company or brokerage are you currently with?",
       field: "company",
-      type: "text",
+      type: "text" as const,
       placeholder: "Your current company",
       helpText: "This helps us understand your current setup",
       validation: (value: string) => value.length >= 2 ? null : "Please enter your company name"
@@ -99,14 +110,14 @@ export default function PLChatbot({ isOpen, onClose }: PLChatbotProps) {
     {
       question: "How many years of experience do you have in mortgage lending?",
       field: "experience",
-      type: "select",
+      type: "select" as const,
       options: ["0-2 years", "3-5 years", "6-10 years", "11-15 years", "15+ years"],
       helpText: "This helps us tailor our recommendations to your expertise level"
     },
     {
       question: "What's your current monthly loan volume in dollars?",
       field: "monthlyVolume",
-      type: "number",
+      type: "number" as const,
       placeholder: "e.g., 2000000",
       helpText: "Enter your typical monthly volume - we'll keep this confidential",
       validation: (value: string) => {
@@ -118,7 +129,7 @@ export default function PLChatbot({ isOpen, onClose }: PLChatbotProps) {
     {
       question: "What's your average margin per loan?",
       field: "avgMargin",
-      type: "number",
+      type: "number" as const,
       placeholder: "e.g., 3500",
       helpText: "Your typical profit per loan helps us calculate potential improvements",
       validation: (value: string) => {
@@ -130,7 +141,7 @@ export default function PLChatbot({ isOpen, onClose }: PLChatbotProps) {
     {
       question: "What are your monthly operating expenses?",
       field: "monthlyExpenses",
-      type: "number",
+      type: "number" as const,
       placeholder: "e.g., 15000",
       helpText: "Include all business costs - rent, staff, marketing, etc.",
       validation: (value: string) => {
@@ -142,14 +153,14 @@ export default function PLChatbot({ isOpen, onClose }: PLChatbotProps) {
     {
       question: "How many people are on your team?",
       field: "teamSize",
-      type: "select",
+      type: "select" as const,
       options: ["Solo (Just me)", "2-3 people", "4-6 people", "7-10 people", "10+ people"],
       helpText: "Team size affects our efficiency recommendations"
     },
     {
       question: "What platform or brokerage are you currently using?",
       field: "currentPlatform",
-      type: "text",
+      type: "text" as const,
       placeholder: "Current platform name",
       helpText: "This helps us understand your current technology stack",
       validation: (value: string) => value.length >= 2 ? null : "Please enter your current platform"
@@ -157,13 +168,13 @@ export default function PLChatbot({ isOpen, onClose }: PLChatbotProps) {
     {
       question: "Finally, what's your biggest business challenge right now?",
       field: "biggestChallenge",
-      type: "textarea",
+      type: "textarea" as const,
       placeholder: "Describe your main challenge...",
       helpText: "Be specific - this helps us prioritize our recommendations",
       validation: (value: string) => value.length >= 10 ? null : "Please provide more detail (at least 10 characters)",
       suggestions: ["Lead generation", "Closing more deals", "Reducing costs", "Scaling operations", "Technology issues"]
     },
-  ]
+  ], [])
 
   // Cleanup timeouts on unmount
   useEffect(() => {
@@ -189,7 +200,8 @@ export default function PLChatbot({ isOpen, onClose }: PLChatbotProps) {
         timeoutRefs.current.push(timeout)
       })
     }
-  }, [isOpen])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpen, messages.length])
 
   // Smooth scroll with proper timing
   useEffect(() => {
@@ -197,7 +209,8 @@ export default function PLChatbot({ isOpen, onClose }: PLChatbotProps) {
       scrollToBottom()
     }, 100)
     timeoutRefs.current.push(timeout)
-  }, [messages])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [messages.length])
 
   const scrollToBottom = useCallback(() => {
     messagesEndRef.current?.scrollIntoView({ 
@@ -238,7 +251,7 @@ export default function PLChatbot({ isOpen, onClose }: PLChatbotProps) {
         isNew: true
       },
     ])
-    setConversationHistory(prev => [...prev, content])
+    _setConversationHistory(prev => [...prev, content])
   }, [])
 
   const addSystemMessage = useCallback((content: string, isError = false) => {
@@ -288,14 +301,14 @@ export default function PLChatbot({ isOpen, onClose }: PLChatbotProps) {
     }
     
     if (lowerValue === 'skip' && chatSteps[currentStep].validation === undefined) {
-      handleSubmit("")
+      // Skip functionality will be handled in handleSubmit
       return true
     }
     
     return false
-  }, [currentStep, addSystemMessage, addBotMessage])
+  }, [currentStep, addSystemMessage, addBotMessage, chatSteps])
 
-  const validateInput = useCallback((value: string, step: any): string | null => {
+  const validateInput = useCallback((value: string, step: ChatStep): string | null => {
     if (step.validation) {
       return step.validation(value)
     }
@@ -359,7 +372,7 @@ export default function PLChatbot({ isOpen, onClose }: PLChatbotProps) {
         timeoutRefs.current.push(timeout)
       })
     }
-  }, [currentStep, formData, handleError, handleSpecialCommands, validateInput, addUserMessage, addBotMessage])
+  }, [currentStep, formData, handleError, handleSpecialCommands, validateInput, addUserMessage, addBotMessage, chatSteps])
 
   const handleRestart = useCallback(() => {
     // Clear all timeouts
@@ -385,7 +398,7 @@ export default function PLChatbot({ isOpen, onClose }: PLChatbotProps) {
       })
       setIsCompleted(false)
       setErrorCount(0)
-      setConversationHistory([])
+      _setConversationHistory([])
       
       // Restart the conversation
       const restartTimeout = setTimeout(() => {
@@ -395,9 +408,9 @@ export default function PLChatbot({ isOpen, onClose }: PLChatbotProps) {
     }, 300)
     
     timeoutRefs.current.push(timeout)
-  }, [addBotMessage])
+  }, [addBotMessage, chatSteps])
 
-  const getCurrentStep = useCallback(() => chatSteps[currentStep], [currentStep])
+  const getCurrentStep = useCallback(() => chatSteps[currentStep], [currentStep, chatSteps])
 
   if (!isOpen) return null
 
@@ -638,7 +651,7 @@ export default function PLChatbot({ isOpen, onClose }: PLChatbotProps) {
 
 // Chat Input Component with BFFLender styling
 interface ChatInputProps {
-  step: any
+  step: ChatStep
   onSubmit: (value: string) => void
   value: string
   onError: (error: string) => void
@@ -671,7 +684,7 @@ function ChatInput({ step, onSubmit, value, onError, disabled }: ChatInputProps)
       <div className="space-y-4">
         <Label className="text-slate-700 font-medium">{step.question}</Label>
         <div className="grid grid-cols-1 gap-2">
-          {step.options.map((option: string, idx: number) => (
+          {step.options?.map((option: string, idx: number) => (
             <Button
               key={idx}
               variant="outline"

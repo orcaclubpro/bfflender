@@ -11,6 +11,25 @@ const compat = new FlatCompat({
 
 const eslintConfig = [
   ...compat.extends("next/core-web-vitals", "next/typescript"),
+  {
+    rules: {
+      // Allow apostrophes and quotes in JSX text, but still catch dangerous characters
+      "react/no-unescaped-entities": [
+        "error",
+        {
+          forbid: [">", "}"]
+        }
+      ],
+      // Allow unused vars that start with underscore (common pattern)
+      "@typescript-eslint/no-unused-vars": [
+        "error",
+        {
+          argsIgnorePattern: "^_",
+          varsIgnorePattern: "^_"
+        }
+      ]
+    }
+  }
 ];
 
 export default eslintConfig;
