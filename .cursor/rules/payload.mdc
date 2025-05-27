@@ -38,12 +38,12 @@ project-root/
 │   ├── (route-groups)/
 │   ├── page-route/
 │   │   ├── page.tsx             # Only imports from _components or _[]
-│   │   ├── _components/         # Page-specific components
+│   │   ├── components/         # Page-specific components
 │   │   │   ├── Component.tsx
 │   │   │   └── utils/           # Page-specific business logic
 │   │   │       └── logic.ts
 │   │   └── _[dynamic]/          # Dynamic route components
-│   └── _components/             # Global components
+│   └── components/             # Global components
 │       └── payload/             # Payload-specific fetch components
 ├── Collections/                 # Payload collections
 │   ├── CollectionName.tsx
