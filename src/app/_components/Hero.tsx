@@ -116,7 +116,7 @@ const BrandSection = React.memo(() => (
             BFFLender
           </h1>
           <p className="text-emerald-400 text-sm sm:text-base font-bold tracking-[0.2em] uppercase">
-            Institutional Mortgage Capital
+            Your Best Food Forward
           </p>
         </div>
       </div>
@@ -188,7 +188,7 @@ const PLChallenge = React.memo(({ onPLChallenge }: { onPLChallenge: () => void }
 
 PLChallenge.displayName = 'PLChallenge';
 
-const WhyBusinessOwnersSwitch = React.memo(({ isVisible, trackInteraction }: { 
+const WhyOwnersSwitch = React.memo(({ isVisible, trackInteraction }: { 
   isVisible: boolean; 
   trackInteraction: () => void; 
 }) => {
@@ -203,7 +203,7 @@ const WhyBusinessOwnersSwitch = React.memo(({ isVisible, trackInteraction }: {
     <div className="mb-10">
       <h3 className="text-white font-bold text-xl mb-6 flex items-center gap-3">
         <TrendingUp className="w-6 h-6 text-emerald-400" />
-        Why Top Business Owners Switch
+        Why Top Owners Switch
       </h3>
       
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -230,7 +230,7 @@ const WhyBusinessOwnersSwitch = React.memo(({ isVisible, trackInteraction }: {
   );
 });
 
-WhyBusinessOwnersSwitch.displayName = 'WhyBusinessOwnersSwitch';
+WhyOwnersSwitch.displayName = 'WhyOwnersSwitch';
 
 const TrustIndicators = React.memo(() => (
   <div className="border-t border-slate-800/50 mt-20 pt-8">
@@ -356,8 +356,8 @@ const Hero = () => {
               {/* P&L Challenge CTA */}
               <PLChallenge onPLChallenge={handlePLChallenge} />
 
-              {/* Why Business Owners Switch */}
-              <WhyBusinessOwnersSwitch isVisible={isVisible} trackInteraction={trackInteraction} />
+              {/* Why Owners Switch */}
+              <WhyOwnersSwitch isVisible={isVisible} trackInteraction={trackInteraction} />
 
               {/* Secondary CTA */}
               <div className="flex flex-col sm:flex-row gap-4">

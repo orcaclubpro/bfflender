@@ -14,7 +14,7 @@
 **Premium Accent**: The amber dot at the peak symbolizes excellence, achievement, and the premium service level clients receive.
 
 #### 2. Brand Representation
-**Visual Hierarchy**: Clean typography with "BFFLender" as the primary brand name, supported by "Institutional Mortgage Capital" as the positioning statement.
+**Visual Hierarchy**: Clean typography with "BFFLender" as the primary brand name, supported by "Your Best Food Forward" as the positioning statement.
 
 **Color Psychology**: Emerald represents growth and financial success, while amber conveys premium quality and warmth - perfect for relationship-focused financial services.
 
@@ -36,7 +36,7 @@
 
 ### Brand Typography Hierarchy
 - **Primary Brand Name**: `font-black tracking-tight` - BFFLender
-- **Tagline**: `font-bold tracking-[0.2em] uppercase` - Institutional Mortgage Capital
+- **Tagline**: `font-bold tracking-[0.2em] uppercase` - Your Best Food Forward
 - **Headlines**: `font-bold` with appropriate sizing
 - **Body Text**: `font-medium` for readability
 

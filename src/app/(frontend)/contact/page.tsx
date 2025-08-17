@@ -7,8 +7,8 @@ import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Phone, Mail, MapPin, Clock, Calendar, Users, ArrowRight, CheckCircle } from "lucide-react"
-import Header from "../_components/Header"
-import Footer from "../_components/Footer"
+import Header from "../../_components/Header"
+import Footer from "../../_components/Footer"
 import BFFLogo from "@/components/layout/BFFLogo"
 
 export default function ContactPage() {

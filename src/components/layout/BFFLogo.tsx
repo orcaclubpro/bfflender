@@ -72,7 +72,7 @@ export default function BFFLogo({
             BFFLender
           </h1>
           <p className={`text-xs font-bold tracking-[0.2em] uppercase ${subtextColor} leading-none mt-1`}>
-            Institutional Mortgage Capital
+            Your Best Food Forward
           </p>
         </div>
       )}
