@@ -10,20 +10,14 @@ bun run dev           # Start development server on localhost:3000
 bun run build         # Build for production
 bun run start         # Start production server
 bun run lint          # Run ESLint with Next.js rules
-
-# Payload CMS Commands
-bun payload migrate:create    # Create database migration
-bun payload migrate          # Run database migrations
-bun payload generate:types   # Generate TypeScript types from schema
 ```
 
 ## Project Architecture
 
-This is a Next.js 15 App Router application with Payload CMS integration, TailwindCSS 4, built for BFFLender mortgage lending company.
+This is a Next.js 15 App Router application with TailwindCSS 4, built for BFFLender mortgage lending company.
 
 ### Core Technologies
 - **Next.js 15.3.2** with App Router
-- **Payload CMS 3.52.0** with MongoDB
 - **React 19** with TypeScript
 - **TailwindCSS 4** with OKLCH color system
 - **shadcn/ui** components with Radix UI primitives
@@ -42,15 +36,6 @@ src/                          # Source directory
 │   │   ├── contact/         # Contact page route
 │   │   ├── layout.tsx       # Frontend-specific layout
 │   │   └── page.tsx         # Main homepage
-│   ├── (payload)/           # Route group for Payload CMS
-│   │   ├── admin/           # CMS admin interface
-│   │   │   └── [[...segments]]/
-│   │   │       ├── page.tsx # Admin dashboard
-│   │   │       └── not-found.tsx
-│   │   ├── api/             # CMS API routes
-│   │   │   └── [...slug]/   
-│   │   │       └── route.ts # REST API endpoints
-│   │   └── layout.tsx       # Payload-specific layout
 │   ├── _components/         # Private shared components
 │   └── layout.tsx           # Root layout with metadata and font
 ├── components/              # Global UI components
@@ -68,8 +53,6 @@ src/                          # Source directory
 │   └── helpers.ts           # General helper functions
 └── styles/                  # Global styles
     └── globals.css          # TailwindCSS with custom theme
-payload.config.ts            # Payload CMS configuration
-payload-types.ts             # Auto-generated Payload types
 .env.local                   # Environment variables
 ```
 
