@@ -1,16 +1,17 @@
-import type React from "react"
+import React from 'react'
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "@/styles/globals.css"
-import { ChatbotProvider } from "./_components/ChatbotProvider"
 
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "BFFLender - The P&L Challenge | AllWestern Mortgage",
-  description:
-    "Take the P&L Challenge with BFFLender. If we can't beat your current mortgage P&L, we'll give you two Las Vegas show tickets. 30+ years of trusted mortgage experience.",
-  keywords: "mortgage, P&L challenge, AllWestern Mortgage, BFFLender, Las Vegas, mortgage solutions",
+  title: {
+    default: "BFFLender - Professional Mortgage Solutions",
+    template: "%s | BFFLender"
+  },
+  description: "Professional mortgage lending solutions with BFFLender. Access your dashboard, manage applications, and work with experienced mortgage professionals.",
+  keywords: "mortgage, lending, BFFLender, AllWestern Mortgage, dashboard, loan applications",
   icons: {
     icon: [
       {
@@ -28,18 +29,12 @@ export const metadata: Metadata = {
   },
 }
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default async function RootLayout(props: { children: React.ReactNode }) {
+  const { children } = props
+
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <ChatbotProvider>
-          {children}
-        </ChatbotProvider>
-      </body>
+      <body className={inter.className}>{children}</body>
     </html>
   )
 }

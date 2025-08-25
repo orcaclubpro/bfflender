@@ -22,6 +22,12 @@ export default function Header() {
           </nav>
           <div className="flex items-center space-x-4">
             <a 
+              href="/login" 
+              className="text-gray-700 hover:text-blue-600 transition-colors font-medium"
+            >
+              Sign In
+            </a>
+            <a 
               href="/challenge" 
               className="btn-primary px-6 py-2 text-sm"
             >

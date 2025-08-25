@@ -116,7 +116,7 @@ const BrandSection = React.memo(() => (
             BFFLender
           </h1>
           <p className="text-emerald-400 text-sm sm:text-base font-bold tracking-[0.2em] uppercase">
-            Your Best Food Forward
+            Your Best Foot Forward
           </p>
         </div>
       </div>
