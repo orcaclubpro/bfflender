@@ -5,8 +5,8 @@ import React from 'react'
 
 import config from '@/payload.config'
 import LoginForm from './components/LoginForm'
-import Header from "../../_components/Header"
-import Footer from "../../_components/Footer"
+import Header from "@/components/layout/Header"
+import Footer from "@/components/layout/Footer"
 
 export default async function LoginPage() {
   const headers = await getHeaders()
@@ -75,7 +75,7 @@ export default async function LoginPage() {
             </div>
             <h1 className="text-4xl font-black text-white mb-2">BFFLender Portal</h1>
             <p className="text-emerald-400 text-sm font-bold tracking-[0.2em] uppercase mb-4">
-              Your Best Foot Forward
+              Our Best Foot Forward
             </p>
             <p className="text-slate-300 text-lg">
               Access your mortgage lending dashboard

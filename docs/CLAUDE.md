@@ -7,38 +7,33 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 **CRITICAL**: Always prioritize code organization, maintainability, and following established patterns. This codebase follows strict architectural principles that must be maintained.
 
 ### Core Organizational Rules
-
 1. **File Placement**: Always place new components in the correct location based on their purpose:
    - **Route-specific components**: Place within the route folder (e.g., `/app/(frontend)/about/components/`)
-   - **Route group shared components**: Place in route group components folder (e.g., `/app/(frontend)/components/`)
-   - **App-wide layout components**: Place in `/components/layout/` (Header, Footer, Navigation)
+   - **Shared app components**: Place in `/app/_components/` (e.g., Hero, PLChallenge)
    - **Reusable UI components**: Place in `/components/ui/` (shadcn/ui primitives)
+   - **Layout components**: Place in `/components/layout/` (Header, Footer, Navigation)
    - **Feature components**: Place in `/components/features/` for complex reusable logic
 
 2. **Component Naming**: Use PascalCase for components and match the filename to the component name
-3. **Import Organization**: Always use `@/` path aliases for internal imports - NO relative imports (../)
+3. **Import Organization**: Always use `@/` path aliases for internal imports
 4. **Type Safety**: Import types from `@/types/` and define component-specific prop types
 
 ### Configuration File Standards
-
-1. **TypeScript Configuration**: Use strict mode and comprehensive path mappings as defined in `tsconfig.json`
+1. **TypeScript Configuration**: Use strict mode and proper path mappings as defined in `tsconfig.json`
 2. **ESLint Rules**: Follow Next.js + TypeScript rules with custom overrides for unused vars with `_` prefix
 3. **Environment Variables**: Store in `.env.local` and never commit sensitive data
 4. **Package Management**: Use Bun for all installations and script execution
 
 ### Anti-Patterns to Avoid
-
 1. **Avoid Deep Nesting**: Don't create folder structures more than 4-5 levels deep
 2. **Avoid Monolithic Components**: Break complex components into smaller, focused pieces
 3. **Avoid Inline Styles**: Use TailwindCSS classes and custom CSS classes from `globals.css`
 4. **Avoid Direct File Creation**: Always consider if you can extend/modify existing files instead
 5. **Avoid Generic Names**: Use descriptive, purpose-specific names for components and functions
 6. **Avoid Nested src/ Directories**: Never create `src/src/` - keep a flat, single `src/` structure
-7. **Avoid CSS Modules**: Use TailwindCSS classes exclusively - NO `.module.css` files
-8. **Avoid Relative Imports**: Always use `@/` aliases instead of `../` patterns
+7. **Avoid Module CSS in Components**: Use TailwindCSS classes instead of `.module.css` files when possible
 
 ### Code Quality Standards
-
 1. **Component Structure**: Each component should have a single responsibility
 2. **Props Interface**: Always define TypeScript interfaces for component props
 3. **Error Handling**: Implement proper error boundaries and loading states
@@ -100,59 +95,25 @@ This is a Next.js 15 App Router application with TailwindCSS 4 and Payload CMS i
 ```
 src/                          # Source directory
 ├── app/                     # Next.js App Router
-│   ├── (frontend)/          # 🌐 Marketing website route group
+│   ├── (frontend)/          # Route group for marketing website
 │   │   ├── about/           # About page route
-│   │   │   ├── components/  # About page specific components
-│   │   │   └── page.tsx
 │   │   ├── benefits/        # Benefits page route
-│   │   │   ├── components/  # Benefits page specific components  
-│   │   │   └── page.tsx
 │   │   ├── challenge/       # Challenge page route
-│   │   │   ├── components/  # Challenge page specific components
-│   │   │   └── page.tsx
 │   │   ├── contact/         # Contact page route
-│   │   │   ├── components/  # Contact page specific components
-│   │   │   └── page.tsx
-│   │   ├── components/      # Frontend route group shared components
-│   │   │   ├── Hero.tsx     # Homepage hero section
-│   │   │   ├── PLChallengeSection.tsx
-│   │   │   ├── BenefitsSection.tsx
-│   │   │   ├── ProofSection.tsx
-│   │   │   ├── RiskFreeSection.tsx
-│   │   │   ├── PLChatbot.tsx
-│   │   │   ├── ChatbotProvider.tsx
-│   │   │   └── hero/        # Hero sub-components
 │   │   ├── layout.tsx       # Frontend-specific layout
-│   │   └── page.tsx         # Homepage
-│   ├── (dashboard)/         # 📊 User dashboard route group
-│   │   ├── components/      # Dashboard shared components
-│   │   ├── login/           # Login functionality
-│   │   │   ├── components/  # Login specific components
-│   │   │   ├── actions.ts   # Login server actions
-│   │   │   └── page.tsx
-│   │   └── layout.tsx       # Dashboard layout
-│   ├── (payload)/           # ⚙️ CMS admin route group
+│   │   └── page.tsx         # Main homepage
+│   ├── (payload)/           # Route group for Payload CMS admin
 │   │   ├── admin/           # Payload admin interface
-│   │   │   ├── [[...segments]]/
-│   │   │   └── importMap.ts
-│   │   ├── api/             # Payload API routes
-│   │   └── layout.tsx       # Payload-specific layout
-│   ├── u/                   # User dashboard routes
-│   │   └── [username]/      # Dynamic user pages
-│   ├── layout.tsx           # Root layout with metadata and font
-│   ├── not-found.tsx        # Global 404 page
-│   └── global-error.tsx     # Global error boundary
+│   │   └── api/             # Payload API routes
+│   ├── _components/         # Private shared components
+│   └── layout.tsx           # Root layout with metadata and font
 ├── collections/             # Payload CMS collections
 │   ├── Media.ts             # Media collection schema
 │   └── Users.ts             # Users collection schema
 ├── components/              # Global UI components
-│   ├── ui/                  # shadcn/ui primitives (Button, Card, etc.)
-│   ├── layout/              # App-wide layout components
-│   │   ├── BFFLogo.tsx      # Company logo component
-│   │   ├── Header.tsx       # App-wide header
-│   │   ├── Footer.tsx       # App-wide footer
-│   │   └── Navigation.tsx   # Navigation component
-│   └── features/            # Complex reusable features
+│   ├── ui/                  # shadcn/ui primitives
+│   ├── layout/              # Layout components (Header, Footer, Logo)
+│   └── features/            # Complex reusable components
 ├── lib/                     # Business logic & configurations
 │   ├── utils.ts             # cn() utility for Tailwind classes
 │   └── constants.ts         # Application constants
@@ -171,24 +132,18 @@ src/                          # Source directory
 
 ### Component Architecture
 
-**Three-Route Group Architecture**:
-- **`(frontend)/`**: Marketing website with all public pages
-- **`(dashboard)/`**: User dashboard functionality and authentication
-- **`(payload)/`**: CMS admin interface and API routes
+**App Router Pattern with Route Groups**:
+- **Route Groups**: `(frontend)/` organizes marketing pages without affecting URLs
+- **Private Components**: `_components/` folder contains shared app components
+- **Feature Colocation**: Page-specific components stay within their route folders
+- **Global Components**: Organized by purpose in `src/components/`
 
-**Component Organization Hierarchy**:
-1. **Route-specific components**: Within route folders (e.g., `/about/components/`)
-2. **Route group shared components**: Within route group (e.g., `/(frontend)/components/`)
-3. **App-wide layout components**: In `/components/layout/` (Header, Footer, etc.)
-4. **Global reusable components**: In `/components/ui/` and `/components/features/`
-
-**Component Organization Details**:
-- `src/app/(frontend)/components/` - Frontend route group shared components (Hero, PLChallenge, etc.)
-- `src/app/(dashboard)/components/` - Dashboard route group shared components
+**Component Organization**:
+- `src/app/_components/` - Private shared components (Hero, PLChallenge, etc.)
 - `src/components/ui/` - shadcn/ui primitives (Button, Card, Modal)
-- `src/components/layout/` - App-wide layout components (BFFLogo, Header, Footer)
-- `src/components/features/` - Complex reusable feature components
-- Route-specific components stay within their route folders
+- `src/components/layout/` - Layout components (BFFLogo, Header, Footer)
+- `src/components/features/` - Complex reusable components
+- Route-specific components stay within their route folders (e.g., `/about/components/`)
 
 **Payload CMS Integration**:
 - `src/collections/` - Payload collection schemas and configurations
@@ -196,43 +151,11 @@ src/                          # Source directory
 - `src/payload-types.ts` - Auto-generated TypeScript types from collections
 - `src/app/(payload)/` - Route group containing admin interface and API routes
 
-**Import Patterns - CRITICAL**:
-- **ALWAYS use `@/` path aliases** for all internal imports
-- **NEVER use relative imports** (../) - this is strictly forbidden
+**Import Patterns**:
+- Use `@/` path aliases for cleaner imports
 - `@/components/ui/button` for UI primitives
-- `@/components/layout/Header` for layout components
-- `@/app/(frontend)/components/Hero` for route group components
 - `@/lib/utils` for utilities
 - `@/types/` for TypeScript definitions
-
-### TypeScript Configuration
-
-**Path Aliases - Comprehensive Mapping**:
-```json
-{
-  "@/*": ["./src/*"],
-  "@/components/*": ["./src/components/*"],
-  "@/app/*": ["./src/app/*"],
-  "@/lib/*": ["./src/lib/*"],
-  "@/utils/*": ["./src/utils/*"],
-  "@/types/*": ["./src/types/*"],
-  "@/styles/*": ["./src/styles/*"],
-  "@/collections/*": ["./src/collections/*"],
-  "@payload-config": ["./src/payload.config.ts"]
-}
-```
-
-**Type Organization Standards**:
-- **Common types**: `src/types/index.ts`
-- **Component prop types**: `src/types/components.ts`
-- **Payload types**: Auto-generated in `src/payload-types.ts`
-- **ESLint rules**: Allow unused vars with `_` prefix
-
-**TypeScript Best Practices**:
-- **Strict mode enabled** for maximum type safety
-- **Interface definitions** for all component props
-- **Proper type exports/imports** using `@/` aliases
-- **Zero relative imports** - all imports use absolute paths
 
 ### Styling System
 
@@ -248,49 +171,38 @@ src/                          # Source directory
 - Custom CSS classes defined in `src/styles/globals.css` under `@layer components`
 - Consistent spacing with `.section-padding`, `.container-padding`
 - Professional focus states with `.focus-ring`
-- **NO CSS Modules** - TailwindCSS only approach
 
 ### Configuration Files
 
 - **next.config.mjs**: Next.js configuration
 - **tailwind.config.ts**: Minimal config (styles in globals.css)
 - **components.json**: shadcn/ui configuration with aliases
-- **tsconfig.json**: TypeScript config with comprehensive `@/*` path mapping
+- **tsconfig.json**: TypeScript config with `@/*` path mapping
 - **eslint.config.mjs**: Next.js + TypeScript rules
 - **.env.local**: Environment variables
 
+### TypeScript Setup
+
+- **Path aliases**: `@/*` maps to `src/*` with specific mappings:
+  - `@/components/*` → `src/components/*`
+  - `@/lib/*` → `src/lib/*`
+  - `@/utils/*` → `src/utils/*`
+  - `@/types/*` → `src/types/*`
+- **Type organization**: Common types in `src/types/index.ts`, component types in `src/types/components.ts`
+- **ESLint rules** allow unused vars with `_` prefix
+
 ### Development Patterns
 
-1. **Route Group Structure**: Three distinct route groups for different app sections
-   - `(frontend)/` for marketing pages
-   - `(dashboard)/` for user functionality
-   - `(payload)/` for CMS administration
-
-2. **Component Placement Strategy**: 
-   - **Route-specific**: Within individual route folders
-   - **Route group shared**: Within route group components folder
-   - **App-wide**: In `src/components/layout/`
-   - **Global reusable**: In `src/components/ui/` and `src/components/features/`
-
-3. **Import Strategy**: 
-   - **MANDATORY**: Use `@/` aliases for ALL internal imports
-   - **FORBIDDEN**: Relative imports (../) are not allowed
-   - **Examples**: `@/app/(frontend)/components/Hero` not `../../components/Hero`
-
-4. **Styling**: 
-   - TailwindCSS classes exclusively
-   - Custom component classes in `globals.css`
-   - NO CSS modules or external stylesheets
-
-5. **Type Safety**: 
-   - Import types from `@/types/` for consistency
-   - Define interfaces for all component props
-   - Use strict TypeScript configuration
-
-6. **Utilities**: 
-   - Pure functions in `@/utils/`
-   - Business logic in `@/lib/`
-   - Shared constants in `@/lib/constants`
+1. **Page Structure**: Use App Router with route groups for organization
+   - Frontend routes in `(frontend)/`
+2. **Component Placement**: 
+   - Global reusable → `src/components/`
+   - App-wide shared → `src/app/_components/`
+   - Page-specific → within route folders
+3. **Import Strategy**: Use `@/` aliases for all internal imports
+4. **Styling**: Combine Tailwind utilities with custom component classes
+5. **Type Safety**: Import types from `@/types/` for consistency
+6. **Utilities**: Use `@/utils/` for pure functions, `@/lib/` for business logic
 
 ### Package Management with Bun
 
@@ -302,12 +214,11 @@ src/                          # Source directory
 
 ### Performance Optimizations
 
-- Next.js App Router for optimal bundling and Server Components
+- Next.js App Router for optimal bundling
 - Custom animations with `will-change` properties
 - Professional scrollbar styling
 - Reduced motion support for accessibility
 - High contrast mode support
-- Bundle optimization through proper route group separation
 
 ### Design System
 
@@ -317,22 +228,9 @@ The project uses a professional design system with:
 - Button variants (primary, secondary, outline)
 - Card variants (elevated, feature, glass)
 - Animation classes for smooth interactions
-- Professional spacing and layout systems
 
-### Error Handling
-
-- **Global Error Boundary**: `src/app/global-error.tsx` for application-wide errors
-- **404 Handling**: `src/app/not-found.tsx` for missing pages
-- **Route-specific Error Boundaries**: Implement within route groups as needed
-- **Loading States**: Use Suspense boundaries for async operations
-
-# Important Instruction Reminders
-
+# important-instruction-reminders
 Do what has been asked; nothing more, nothing less.
 NEVER create files unless they're absolutely necessary for achieving your goal.
 ALWAYS prefer editing an existing file to creating a new one.
 NEVER proactively create documentation files (*.md) or README files. Only create documentation files if explicitly requested by the User.
-
-**Critical Import Rule**: NEVER use relative imports (../). ALWAYS use @/ aliases for internal imports.
-**Critical Structure Rule**: NEVER create nested src/ directories. Keep flat structure with single src/ directory.
-**Critical Styling Rule**: NEVER create .module.css files. Use TailwindCSS classes exclusively.

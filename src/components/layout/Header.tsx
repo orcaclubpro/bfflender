@@ -6,14 +6,28 @@ import { Menu, X } from "lucide-react"
 import Link from "next/link"
 import { useState } from "react"
 import BFFLogo from "./BFFLogo"
-import { useChatbot } from "../../app/_components/ChatbotProvider"
+import { useChatbot } from "@/app/(frontend)/components/ChatbotProvider"
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false)
-  const { openChatbot } = useChatbot()
+  
+  // Safely get chatbot context - will be undefined if provider is not available
+  let openChatbot: (() => void) | undefined
+  try {
+    const chatbotContext = useChatbot()
+    openChatbot = chatbotContext.openChatbot
+  } catch {
+    // ChatbotProvider not available in this route group
+    openChatbot = undefined
+  }
 
   const handleTakeChallenge = () => {
-    openChatbot()
+    if (openChatbot) {
+      openChatbot()
+    } else {
+      // Fallback for routes without ChatbotProvider - redirect to challenge page
+      window.location.href = '/challenge'
+    }
   };
 
   return (

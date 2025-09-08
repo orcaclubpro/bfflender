@@ -1,7 +1,7 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
-import { useChatbot } from "../../../_components/ChatbotProvider"
+import { useChatbot } from "@/app/(frontend)/components/ChatbotProvider"
 
 export default function AboutCTA() {
   const { openChatbot } = useChatbot();

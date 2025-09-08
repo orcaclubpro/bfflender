@@ -1,20 +1,19 @@
 'use client';
 
 import React from 'react';
-import styles from './styles/Navigation.module.css';
 
 const Navigation = () => {
   return (
-    <nav className={styles.nav}>
-      <div className={styles.container}>
-        <div className={styles.logo}>BFFLender.com</div>
-        <div className={styles.links}>
-          <a href="#" className={styles.link}>Home</a>
-          <a href="#" className={styles.link}>About</a>
-          <a href="#" className={styles.link}>Services</a>
-          <a href="#" className={styles.link}>Contact</a>
+    <nav className="bg-white shadow-sm">
+      <div className="container mx-auto px-4 py-4 flex items-center justify-between">
+        <div className="text-xl font-bold text-emerald-600">BFFLender.com</div>
+        <div className="flex space-x-6">
+          <a href="#" className="text-slate-700 hover:text-emerald-600 transition-colors">Home</a>
+          <a href="#" className="text-slate-700 hover:text-emerald-600 transition-colors">About</a>
+          <a href="#" className="text-slate-700 hover:text-emerald-600 transition-colors">Services</a>
+          <a href="#" className="text-slate-700 hover:text-emerald-600 transition-colors">Contact</a>
         </div>
-        <button className={styles.button}>
+        <button className="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-2 rounded-lg transition-colors">
           Get Started
         </button>
       </div>

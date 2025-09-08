@@ -5,8 +5,8 @@ import FinancialStrength from "./components/FinancialStrength"
 import CompanyCulture from "./components/CompanyCulture"
 import CommunityInvolvement from "./components/CommunityInvolvement"
 import AboutCTA from "./components/AboutCTA"
-import Header from "../../_components/Header"
-import Footer from "../../_components/Footer"
+import Header from "@/components/layout/Header"
+import Footer from "@/components/layout/Footer"
 
 export default function AboutPage() {
   return (

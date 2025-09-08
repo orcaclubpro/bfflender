@@ -2,7 +2,7 @@
 
 import React, { useState, useTransition } from 'react'
 import { ArrowRight, Mail, Lock, AlertCircle, Loader2 } from 'lucide-react'
-import { loginAction } from '../actions'
+import { loginAction } from '@/app/(dashboard)/login/actions'
 
 export default function LoginForm() {
   const [email, setEmail] = useState('')

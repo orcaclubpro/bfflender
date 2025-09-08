@@ -1,6 +1,6 @@
 import React from 'react'
 import type { Metadata } from "next"
-import { ChatbotProvider } from "../_components/ChatbotProvider"
+import { ChatbotProvider } from "./components/ChatbotProvider"
 
 export const metadata: Metadata = {
   title: "BFFLender - The P&L Challenge | AllWestern Mortgage",

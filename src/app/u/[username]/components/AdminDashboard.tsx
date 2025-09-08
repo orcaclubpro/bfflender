@@ -155,7 +155,7 @@ export function AdminDashboard({ user: _user, currentUser }: AdminDashboardProps
   })
 
   const handleLogout = async () => {
-    const { logoutAction } = await import('../actions/logoutAction')
+    const { logoutAction } = await import('@/app/u/[username]/actions/logoutAction')
     await logoutAction()
   }
 

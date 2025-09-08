@@ -184,7 +184,7 @@ export function ClientDashboard({ user: _user, currentUser }: ClientDashboardPro
   })
 
   const handleLogout = async () => {
-    const { logoutAction } = await import('../actions/logoutAction')
+    const { logoutAction } = await import('@/app/u/[username]/actions/logoutAction')
     await logoutAction()
   }
 

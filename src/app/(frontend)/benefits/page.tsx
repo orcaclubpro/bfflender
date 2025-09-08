@@ -5,8 +5,8 @@ import FlatOrganization from "./components/FlatOrganization"
 import PersonalBranding from "./components/PersonalBranding"
 import TechnologyAdvantage from "./components/TechnologyAdvantage"
 import BenefitsCTA from "./components/BenefitsCTA"
-import Header from "../../_components/Header"
-import Footer from "../../_components/Footer"
+import Header from "@/components/layout/Header"
+import Footer from "@/components/layout/Footer"
 
 export default function BenefitsPage() {
   return (
