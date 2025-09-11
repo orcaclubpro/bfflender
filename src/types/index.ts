@@ -29,3 +29,6 @@ export interface BenefitData {
   description: string;
   icon?: string;
 }
+
+// Re-export auth types
+export * from './auth';

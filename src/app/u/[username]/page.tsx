@@ -1,29 +1,28 @@
 import { headers as getHeaders } from 'next/headers'
 import { getPayload } from 'payload'
 import { redirect, notFound } from 'next/navigation'
-import React from 'react'
 
 import config from '@/payload.config'
 
-interface UserDashboardPageProps {
+interface UserRedirectPageProps {
   params: Promise<{ username: string }>
 }
 
-export default async function UserDashboardPage({ params }: UserDashboardPageProps) {
+export default async function UserRedirectPage({ params }: UserRedirectPageProps) {
   const { username } = await params
   const headers = await getHeaders()
   const payloadConfig = await config
   const payload = await getPayload({ config: payloadConfig })
   
-  // Get currently authenticated user
+  // Check if user is authenticated
   const { user: currentUser } = await payload.auth({ headers })
 
-  // If not logged in, redirect to login
+  // If not logged in, redirect to login with return URL
   if (!currentUser) {
-    redirect('/login')
+    redirect(`/login?returnUrl=${encodeURIComponent(`/u/${username}`)}`)
   }
 
-  // Find the user by username
+  // Verify the username exists in the system
   const userQuery = await payload.find({
     collection: 'users',
     where: {
@@ -49,23 +48,15 @@ export default async function UserDashboardPage({ params }: UserDashboardPagePro
     redirect('/')
   }
 
-  // Import dashboard components dynamically based on role
-  const isAdmin = targetUser.roles === 'admin'
-  
-  if (isAdmin) {
-    const { AdminDashboard } = await import('./components/AdminDashboard')
-    return <AdminDashboard user={targetUser} currentUser={currentUser} />
-  } else {
-    const { ClientDashboard } = await import('./components/ClientDashboard')
-    return <ClientDashboard user={targetUser} currentUser={currentUser} />
-  }
+  // If user is authenticated and has access, redirect to the working dashboard
+  redirect(`/login/u/${username}`)
 }
 
-export async function generateMetadata({ params }: UserDashboardPageProps) {
+export async function generateMetadata({ params }: UserRedirectPageProps) {
   const { username } = await params
   
   return {
     title: `${username} Dashboard - BFFLender Portal`,
-    description: `Personalized dashboard for ${username} on BFFLender mortgage lending platform.`,
+    description: `Access dashboard for ${username} on BFFLender mortgage lending platform.`,
   }
 }

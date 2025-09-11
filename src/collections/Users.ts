@@ -44,7 +44,7 @@ export const Users: CollectionConfig = {
     {
       name: 'firstName',
       type: 'text',
-      required: true,
+      required: false,
       admin: {
         placeholder: 'Enter first name',
       },
@@ -52,7 +52,7 @@ export const Users: CollectionConfig = {
     {
       name: 'lastName',
       type: 'text',
-      required: true,
+      required: false,
       admin: {
         placeholder: 'Enter last name',
       },
@@ -77,8 +77,11 @@ export const Users: CollectionConfig = {
     },
   ],
   access: {
-    // Only admins can create new users
+    // Allow system creation (for API routes) and admin creation
     create: ({ req }) => {
+      // Allow creation without user context (system/API routes)
+      if (!req?.user) return true
+      // Otherwise require admin privileges
       return req?.user?.roles?.includes('admin') ?? false
     },
     // Users can read their own profile, admins can read all

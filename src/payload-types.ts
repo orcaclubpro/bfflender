@@ -69,6 +69,8 @@ export interface Config {
   collections: {
     users: User;
     media: Media;
+    documents: Document;
+    challenges: Challenge;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -77,6 +79,8 @@ export interface Config {
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    documents: DocumentsSelect<false> | DocumentsSelect<true>;
+    challenges: ChallengesSelect<false> | ChallengesSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -123,8 +127,8 @@ export interface User {
    * Select the user role for access control
    */
   roles: 'admin' | 'client';
-  firstName: string;
-  lastName: string;
+  firstName?: string | null;
+  lastName?: string | null;
   /**
    * Used for dashboard URL: /u/username
    */
@@ -168,6 +172,114 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "documents".
+ */
+export interface Document {
+  id: string;
+  /**
+   * Optional description for this document
+   */
+  description?: string | null;
+  /**
+   * Tags to categorize this document
+   */
+  tags?:
+    | {
+        tag: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * User associated with this document
+   */
+  relatedUser?: (string | null) | User;
+  /**
+   * Challenge associated with this document (if applicable)
+   */
+  relatedChallenge?: (string | null) | Challenge;
+  /**
+   * Make this document publicly accessible
+   */
+  isPublic?: boolean | null;
+  /**
+   * User who uploaded this document
+   */
+  uploadedBy?: (string | null) | User;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+}
+/**
+ * Challenge submissions from chatbot interactions
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "challenges".
+ */
+export interface Challenge {
+  id: string;
+  /**
+   * Name provided during chatbot interaction
+   */
+  name: string;
+  /**
+   * Email provided during chatbot interaction
+   */
+  email: string;
+  /**
+   * Responses to chatbot questions
+   */
+  answers?: {
+    question1?: string | null;
+    question2?: string | null;
+    question3?: string | null;
+    additionalInfo?: string | null;
+  };
+  /**
+   * IDs of documents uploaded during this challenge
+   */
+  documentIds?:
+    | {
+        documentId: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * User account created after password verification
+   */
+  user?: (string | null) | User;
+  /**
+   * Current status of the challenge submission
+   */
+  status: 'submitted' | 'pending_verification' | 'verified' | 'in_progress' | 'completed' | 'rejected';
+  /**
+   * When the challenge was submitted
+   */
+  submittedAt?: string | null;
+  /**
+   * When the challenge was verified by owner password entry
+   */
+  verifiedAt?: string | null;
+  /**
+   * When the challenge process was completed
+   */
+  completedAt?: string | null;
+  /**
+   * Admin notes for internal tracking
+   */
+  notes?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
@@ -180,6 +292,14 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'media';
         value: string | Media;
+      } | null)
+    | ({
+        relationTo: 'documents';
+        value: string | Document;
+      } | null)
+    | ({
+        relationTo: 'challenges';
+        value: string | Challenge;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -266,6 +386,64 @@ export interface MediaSelect<T extends boolean = true> {
   height?: T;
   focalX?: T;
   focalY?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "documents_select".
+ */
+export interface DocumentsSelect<T extends boolean = true> {
+  description?: T;
+  tags?:
+    | T
+    | {
+        tag?: T;
+        id?: T;
+      };
+  relatedUser?: T;
+  relatedChallenge?: T;
+  isPublic?: T;
+  uploadedBy?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "challenges_select".
+ */
+export interface ChallengesSelect<T extends boolean = true> {
+  name?: T;
+  email?: T;
+  answers?:
+    | T
+    | {
+        question1?: T;
+        question2?: T;
+        question3?: T;
+        additionalInfo?: T;
+      };
+  documentIds?:
+    | T
+    | {
+        documentId?: T;
+        id?: T;
+      };
+  user?: T;
+  status?: T;
+  submittedAt?: T;
+  verifiedAt?: T;
+  completedAt?: T;
+  notes?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

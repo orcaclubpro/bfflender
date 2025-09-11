@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useState, useEffect, useRef, useMemo, useCallback, useTransition, useDeferredValue, Suspense, lazy } from 'react';
-import { ArrowRight, TrendingUp, CheckCircle, Clock, Shield, Target, X } from 'lucide-react';
+import { ArrowRight, TrendingUp, CheckCircle, Clock, Shield, Target, X, LogIn } from 'lucide-react';
+import Link from 'next/link';
 import { useChatbot } from './ChatbotProvider';
 
 // Lazy load heavy components
@@ -132,6 +133,25 @@ const BrandSection = React.memo(() => (
           30+ years building institutional-grade mortgage partnerships. Put your P&L where your mouth is — 
           if we can&apos;t beat your current performance, Vegas is on us.
         </p>
+        
+        <div className="mb-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+          <Link
+            href="/challenge"
+            className="group inline-flex items-center gap-3 border-2 border-white text-white hover:bg-white hover:text-slate-900 px-6 py-3 rounded-xl font-semibold text-base transition-all duration-300 hover:scale-105"
+          >
+            <span>Learn More</span>
+            <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+          </Link>
+          
+          <Link
+            href="/login"
+            className="group inline-flex items-center gap-3 bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600 text-white px-6 py-3 rounded-xl font-semibold text-base transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-emerald-500/30"
+          >
+            <LogIn className="w-5 h-5" />
+            <span>Sign In</span>
+          </Link>
+        </div>
+        
         <div className="w-32 h-px bg-gradient-to-r from-transparent via-amber-400 to-transparent mx-auto"></div>
       </div>
     </div>
