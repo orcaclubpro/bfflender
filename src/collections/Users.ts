@@ -22,6 +22,7 @@ export const Users: CollectionConfig = {
       ],
       defaultValue: 'client',
       required: true,
+      saveToJWT: true,
       admin: {
         description: 'Select the user role for access control',
       },
@@ -62,6 +63,7 @@ export const Users: CollectionConfig = {
       type: 'text',
       required: true,
       unique: true,
+      saveToJWT: true,
       admin: {
         placeholder: 'Enter unique username',
         description: 'Used for dashboard URL: /u/username',

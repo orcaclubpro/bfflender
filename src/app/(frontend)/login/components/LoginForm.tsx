@@ -1,14 +1,26 @@
 'use client'
 
-import React, { useState, useTransition } from 'react'
+import React, { useState, useTransition, useEffect } from 'react'
 import { ArrowRight, Mail, Lock, AlertCircle, Loader2 } from 'lucide-react'
-import { loginAction } from '@/app/(dashboard)/login/actions'
+import { loginAction } from '@/app/(frontend)/login/actions'
 
-export default function LoginForm() {
+interface LoginFormProps {
+  returnUrl?: string
+  error?: string
+}
+
+export default function LoginForm({ returnUrl, error: urlError }: LoginFormProps) {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [isPending, startTransition] = useTransition()
+
+  // Set error from URL parameter if provided
+  useEffect(() => {
+    if (urlError) {
+      setError(decodeURIComponent(urlError))
+    }
+  }, [urlError])
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -29,6 +41,11 @@ export default function LoginForm() {
         const formData = new FormData()
         formData.append('email', email)
         formData.append('password', password)
+        
+        // Add return URL to form data if provided
+        if (returnUrl) {
+          formData.append('returnUrl', returnUrl)
+        }
 
         const result = await loginAction(formData)
         

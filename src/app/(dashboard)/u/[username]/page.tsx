@@ -18,9 +18,9 @@ export default async function UserDashboardPage({ params }: UserDashboardPagePro
   // Get currently authenticated user
   const { user: currentUser } = await payload.auth({ headers })
 
-  // If not logged in, redirect to login
+  // If not logged in, redirect to login with return URL
   if (!currentUser) {
-    redirect('/login')
+    redirect(`/login?returnUrl=${encodeURIComponent(`/u/${username}`)}`)
   }
 
   // Find the user by username

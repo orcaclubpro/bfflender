@@ -1,47 +1,45 @@
 import { headers as getHeaders } from 'next/headers'
 import { getPayload } from 'payload'
-import { redirect } from 'next/navigation'
 import React from 'react'
 
 import config from '@/payload.config'
 import LoginForm from './components/LoginForm'
+import ClientRedirect from './components/ClientRedirect'
 import Header from "@/components/layout/Header"
 import Footer from "@/components/layout/Footer"
+import type { User } from '@/payload-types'
 
-export default async function LoginPage() {
-  const headers = await getHeaders()
-  const payloadConfig = await config
-  const payload = await getPayload({ config: payloadConfig })
-  const { user } = await payload.auth({ headers })
+interface LoginPageProps {
+  searchParams: Promise<{ returnUrl?: string; error?: string }>
+}
 
-  // If user is already logged in, redirect to their dashboard
-  if (user) {
-    // Fetch full user data to get username if not already available
-    if (user.username) {
-      redirect(`/u/${user.username}`)
-    } else {
-      // Fallback: fetch full user data to get username
-      try {
-        const fullUser = await payload.findByID({
-          collection: 'users',
-          id: user.id,
-          depth: 0,
-        })
-        if (fullUser.username) {
-          redirect(`/u/${fullUser.username}`)
-        } else {
-          // If still no username, redirect to home page
-          redirect('/')
-        }
-      } catch (error) {
-        console.error('Error fetching user data:', error)
-        redirect('/')
-      }
+export default async function LoginPage({ searchParams }: LoginPageProps) {
+  const { returnUrl, error } = await searchParams
+  let isLoggedIn = false
+  let userUsername = ''
+
+  // Check if user is already logged in (but don't redirect server-side to avoid conflicts)
+  try {
+    const headers = await getHeaders()
+    const payloadConfig = await config
+    const payload = await getPayload({ config: payloadConfig })
+    const { user } = await payload.auth({ headers })
+
+    if (user) {
+      const typedUser = user as User
+      isLoggedIn = true
+      userUsername = typedUser.username || ''
     }
+  } catch (error) {
+    // Auth check failed, user is not logged in
+    console.error('Auth check error:', error)
   }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-emerald-950 via-slate-900 to-emerald-900 relative overflow-hidden">
+      {/* Client-side redirect if user is already logged in */}
+      <ClientRedirect isLoggedIn={isLoggedIn} username={userUsername} returnUrl={returnUrl} />
+      
       {/* Header */}
       <Header />
       
@@ -84,7 +82,7 @@ export default async function LoginPage() {
 
           {/* Login Form */}
           <div className="bg-gradient-to-br from-slate-900/80 to-slate-800/80 backdrop-blur-xl border border-slate-700/50 rounded-2xl p-8 shadow-2xl">
-            <LoginForm />
+            <LoginForm returnUrl={returnUrl} error={error} />
           </div>
 
           {/* Footer Links */}
