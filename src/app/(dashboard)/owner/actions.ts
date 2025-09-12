@@ -143,7 +143,7 @@ export async function createOwnerAccount(
     const documentsQuery = await payload.find({
       collection: 'documents',
       where: {
-        challengeId: {
+        relatedChallenge: {
           equals: challengeId,
         },
       },

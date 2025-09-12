@@ -54,6 +54,10 @@ export default function LoginForm({ returnUrl, error: urlError }: LoginFormProps
         }
         // If successful, the server action will handle the redirect
       } catch (error) {
+        // Ignore NEXT_REDIRECT errors - they're used internally by Next.js for redirects
+        if (error instanceof Error && error.message === 'NEXT_REDIRECT') {
+          return
+        }
         console.error('Login submission error:', error)
         setError('An unexpected error occurred. Please try again.')
       }

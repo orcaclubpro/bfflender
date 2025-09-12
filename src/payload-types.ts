@@ -133,6 +133,38 @@ export interface User {
    * Used for dashboard URL: /u/username
    */
   username: string;
+  /**
+   * Contact phone number for the user
+   */
+  phone?: string | null;
+  /**
+   * Primary street address
+   */
+  address?: string | null;
+  /**
+   * City of residence
+   */
+  city?: string | null;
+  /**
+   * State or province of residence
+   */
+  state?: string | null;
+  /**
+   * Postal/ZIP code
+   */
+  zipCode?: string | null;
+  /**
+   * Current employment status
+   */
+  employmentStatus?: ('employed' | 'self-employed' | 'contract' | 'retired' | 'unemployed' | 'student') | null;
+  /**
+   * Current employer or company name
+   */
+  employer?: string | null;
+  /**
+   * Annual income in USD
+   */
+  annualIncome?: number | null;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -352,6 +384,14 @@ export interface UsersSelect<T extends boolean = true> {
   firstName?: T;
   lastName?: T;
   username?: T;
+  phone?: T;
+  address?: T;
+  city?: T;
+  state?: T;
+  zipCode?: T;
+  employmentStatus?: T;
+  employer?: T;
+  annualIncome?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;

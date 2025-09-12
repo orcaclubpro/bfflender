@@ -77,6 +77,122 @@ export const Users: CollectionConfig = {
         return true
       },
     },
+    {
+      name: 'phone',
+      type: 'text',
+      required: false,
+      admin: {
+        placeholder: 'Enter phone number',
+        description: 'Contact phone number for the user',
+      },
+      validate: (value: string | null | undefined) => {
+        if (value && !/^[\d\s\(\)\-\+\.]+$/.test(value)) {
+          return 'Please enter a valid phone number'
+        }
+        return true
+      },
+    },
+    {
+      name: 'address',
+      type: 'text',
+      required: false,
+      admin: {
+        placeholder: 'Enter street address',
+        description: 'Primary street address',
+      },
+    },
+    {
+      name: 'city',
+      type: 'text',
+      required: false,
+      admin: {
+        placeholder: 'Enter city',
+        description: 'City of residence',
+      },
+    },
+    {
+      name: 'state',
+      type: 'text',
+      required: false,
+      admin: {
+        placeholder: 'Enter state',
+        description: 'State or province of residence',
+      },
+    },
+    {
+      name: 'zipCode',
+      type: 'text',
+      required: false,
+      admin: {
+        placeholder: 'Enter ZIP code',
+        description: 'Postal/ZIP code',
+      },
+      validate: (value: string | null | undefined) => {
+        if (value && !/^\d{5}(-\d{4})?$/.test(value)) {
+          return 'Please enter a valid ZIP code (e.g., 12345 or 12345-6789)'
+        }
+        return true
+      },
+    },
+    {
+      name: 'employmentStatus',
+      type: 'select',
+      options: [
+        {
+          label: 'Full-time Employed',
+          value: 'employed',
+        },
+        {
+          label: 'Self-employed',
+          value: 'self-employed',
+        },
+        {
+          label: 'Contract Worker',
+          value: 'contract',
+        },
+        {
+          label: 'Retired',
+          value: 'retired',
+        },
+        {
+          label: 'Unemployed',
+          value: 'unemployed',
+        },
+        {
+          label: 'Student',
+          value: 'student',
+        },
+      ],
+      required: false,
+      admin: {
+        description: 'Current employment status',
+      },
+    },
+    {
+      name: 'employer',
+      type: 'text',
+      required: false,
+      admin: {
+        placeholder: 'Enter employer name',
+        description: 'Current employer or company name',
+      },
+    },
+    {
+      name: 'annualIncome',
+      type: 'number',
+      required: false,
+      admin: {
+        placeholder: 'Enter annual income',
+        description: 'Annual income in USD',
+        step: 1000,
+      },
+      validate: (value: number | null | undefined) => {
+        if (value !== null && value !== undefined && value < 0) {
+          return 'Annual income must be a positive number'
+        }
+        return true
+      },
+    },
   ],
   access: {
     // Allow system creation (for API routes) and admin creation

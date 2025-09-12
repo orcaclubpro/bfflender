@@ -10,11 +10,11 @@ import Footer from "@/components/layout/Footer"
 import type { User } from '@/payload-types'
 
 interface LoginPageProps {
-  searchParams: Promise<{ returnUrl?: string; error?: string }>
+  searchParams: Promise<{ returnUrl?: string; error?: string; returning?: string; challenge?: string }>
 }
 
 export default async function LoginPage({ searchParams }: LoginPageProps) {
-  const { returnUrl, error } = await searchParams
+  const { returnUrl, error, returning, challenge } = await searchParams
   let isLoggedIn = false
   let userUsername = ''
 
@@ -79,6 +79,30 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
               Access your mortgage lending dashboard
             </p>
           </div>
+
+          {/* Returning User Message */}
+          {returning === 'true' && (
+            <div className="mb-6 bg-gradient-to-r from-emerald-900/80 to-emerald-800/80 backdrop-blur-xl border border-emerald-600/50 rounded-xl p-4">
+              <div className="flex items-start gap-3">
+                <svg className="w-5 h-5 text-emerald-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <div>
+                  <h3 className="text-emerald-400 font-semibold text-sm mb-1">
+                    Challenge Submitted Successfully!
+                  </h3>
+                  <p className="text-emerald-100 text-sm leading-relaxed">
+                    Your P&L challenge has been linked to your existing account. Please log in to view your submission and track its progress.
+                  </p>
+                  {challenge && (
+                    <p className="text-emerald-300 text-xs mt-2 opacity-75">
+                      Challenge ID: {challenge}
+                    </p>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* Login Form */}
           <div className="bg-gradient-to-br from-slate-900/80 to-slate-800/80 backdrop-blur-xl border border-slate-700/50 rounded-2xl p-8 shadow-2xl">

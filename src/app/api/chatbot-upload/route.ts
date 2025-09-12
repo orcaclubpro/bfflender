@@ -119,6 +119,55 @@ export async function POST(request: NextRequest) {
       },
     })
 
+    // Check if user already exists with this email
+    const existingUserQuery = await payload.find({
+      collection: 'users',
+      where: {
+        email: {
+          equals: email,
+        },
+      },
+    })
+
+    let redirectUrl = `/owner?challenge=${challengeRecord.id}`
+    let message = 'Challenge created successfully'
+
+    if (existingUserQuery.docs.length > 0) {
+      // User already exists - link challenge and documents to existing user
+      const existingUser = existingUserQuery.docs[0]
+
+      // Update challenge to link to existing user and mark as verified
+      await payload.update({
+        collection: 'challenges',
+        id: challengeRecord.id,
+        data: {
+          user: existingUser.id,
+          status: 'verified',
+          verifiedAt: new Date().toISOString(),
+        },
+      })
+
+      // Update document to link to existing user
+      await payload.update({
+        collection: 'documents',
+        id: document.id,
+        data: {
+          relatedUser: existingUser.id,
+          uploadedBy: existingUser.id,
+        },
+      })
+
+      // Redirect to login page with message
+      redirectUrl = `/login?returning=true&challenge=${challengeRecord.id}`
+      message = 'Challenge linked to existing account - please log in to continue'
+
+      console.log('Challenge auto-linked to existing user:', {
+        challengeId: challengeRecord.id,
+        userId: existingUser.id,
+        email: existingUser.email,
+      })
+    }
+
     // Log the submission for tracking
     console.log('Chatbot challenge submission:', {
       challengeId: challengeRecord.id,
@@ -127,6 +176,7 @@ export async function POST(request: NextRequest) {
       user: { name, email },
       chatbotData: { goal, experience, volume, challenge },
       timestamp: new Date().toISOString(),
+      autoLinked: existingUserQuery.docs.length > 0,
     })
 
     return NextResponse.json({
@@ -134,8 +184,8 @@ export async function POST(request: NextRequest) {
       challengeId: challengeRecord.id,
       documentId: document.id,
       filename: document.filename,
-      redirectUrl: `/owner?challenge=${challengeRecord.id}`,
-      message: 'Challenge created successfully',
+      redirectUrl,
+      message,
     })
   } catch (error) {
     console.error('Chatbot upload error:', error)
