@@ -48,16 +48,14 @@ export default function LoginForm({ returnUrl, error: urlError }: LoginFormProps
         }
 
         const result = await loginAction(formData)
-        
-        if (!result?.success) {
-          setError(result?.message || 'Login failed. Please try again.')
+
+        // Only show error if we get an actual error response
+        // If result is undefined/null, it likely means redirect happened
+        if (result && !result.success) {
+          setError(result.message || 'Login failed. Please try again.')
         }
         // If successful, the server action will handle the redirect
       } catch (error) {
-        // Ignore NEXT_REDIRECT errors - they're used internally by Next.js for redirects
-        if (error instanceof Error && error.message === 'NEXT_REDIRECT') {
-          return
-        }
         console.error('Login submission error:', error)
         setError('An unexpected error occurred. Please try again.')
       }

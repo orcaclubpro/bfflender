@@ -49,10 +49,14 @@ export async function loginAction(formData: FormData): Promise<LoginResult> {
     }
   }
 
+  let redirectUrl: string | null = null
+
   try {
+    // Await the config before passing it to login function
+    const payloadConfig = await config
     const result = await login({
       collection: 'users',
-      config,
+      config: payloadConfig,
       email,
       password,
     })
@@ -63,11 +67,11 @@ export async function loginAction(formData: FormData): Promise<LoginResult> {
       const user = result.user as User
 
       if (user.username) {
-        // Get role-based redirect URL
-        const redirectUrl = getRoleBasedRedirect(user, returnUrl)
-        
-        console.log(`User ${user.email} (${user.roles}) logged in successfully, redirecting to: ${redirectUrl}`)
-        redirect(redirectUrl)
+        // Get role-based redirect URL but don't redirect yet
+        redirectUrl = getRoleBasedRedirect(user, returnUrl)
+
+        console.log(`User ${user.email} (${user.roles}) logged in successfully, will redirect to: ${redirectUrl}`)
+        // Don't redirect here - do it outside try/catch
       } else {
         console.error('Username not found for user:', user.id)
         return {
@@ -75,15 +79,15 @@ export async function loginAction(formData: FormData): Promise<LoginResult> {
           message: 'User account configuration incomplete. Please contact support.'
         }
       }
-    }
-
-    return {
-      success: false,
-      message: 'Invalid credentials'
+    } else {
+      return {
+        success: false,
+        message: 'Invalid credentials'
+      }
     }
   } catch (error) {
     console.error('Login error:', error)
-    
+
     // Handle specific Payload auth errors
     if (error instanceof Error) {
       if (error.message.includes('The email or password provided is incorrect')) {
@@ -110,5 +114,16 @@ export async function loginAction(formData: FormData): Promise<LoginResult> {
       success: false,
       message: 'Login failed. Please check your credentials and try again.'
     }
+  }
+
+  // Redirect outside try/catch to avoid NEXT_REDIRECT being caught
+  if (redirectUrl) {
+    redirect(redirectUrl)
+  }
+
+  // This should never be reached, but just in case
+  return {
+    success: false,
+    message: 'Login failed. Please check your credentials and try again.'
   }
 }
