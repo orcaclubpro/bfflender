@@ -98,6 +98,7 @@ export interface DocumentData {
   url?: string | null;
   mimeType?: string | null;
   filesize?: number | null;
+  documentType?: string | null;
   description?: string | null;
   tags?: {
     tag: string;

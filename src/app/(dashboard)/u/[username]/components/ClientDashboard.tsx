@@ -101,12 +101,68 @@ const getProgressColor = (status: string) => {
 
 const formatFileSize = (bytes: number): string => {
   if (bytes === 0) return '0 Bytes'
-  
+
   const k = 1024
   const sizes = ['Bytes', 'KB', 'MB', 'GB']
   const i = Math.floor(Math.log(bytes) / Math.log(k))
-  
+
   return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
+}
+
+const getDocumentTypeBadge = (documentType: string | null | undefined) => {
+  if (!documentType) return null
+
+  const badges = {
+    'initial-submission': {
+      label: 'Your Upload',
+      className: 'bg-blue-100 text-blue-700 border-blue-200',
+    },
+    'completion-document': {
+      label: 'Completion Certificate',
+      className: 'bg-amber-100 text-amber-700 border-amber-200',
+    },
+    'supporting-document': {
+      label: 'Supporting Doc',
+      className: 'bg-gray-100 text-gray-700 border-gray-200',
+    },
+  }
+
+  const badge = badges[documentType as keyof typeof badges]
+  if (!badge) return null
+
+  return (
+    <span className={cn('inline-flex items-center px-2 py-0.5 rounded text-xs font-medium border', badge.className)}>
+      {badge.label}
+    </span>
+  )
+}
+
+const getDocumentStyle = (documentType: string | null | undefined) => {
+  const styles = {
+    'initial-submission': {
+      container: 'bg-blue-50 border-blue-200',
+      icon: 'text-blue-600',
+      text: 'text-blue-900',
+      subtext: 'text-blue-600',
+      button: 'border-blue-300',
+    },
+    'completion-document': {
+      container: 'bg-gradient-to-r from-amber-50 to-amber-100 border-amber-300',
+      icon: 'text-amber-600',
+      text: 'text-amber-900',
+      subtext: 'text-amber-700',
+      button: 'border-amber-400',
+    },
+    'supporting-document': {
+      container: 'bg-gray-50 border-gray-200',
+      icon: 'text-gray-600',
+      text: 'text-gray-900',
+      subtext: 'text-gray-600',
+      button: 'border-gray-300',
+    },
+  }
+
+  return styles[documentType as keyof typeof styles] || styles['supporting-document']
 }
 
 export function ClientDashboard({ user: _user, currentUser }: ClientDashboardProps) {
@@ -253,14 +309,15 @@ export function ClientDashboard({ user: _user, currentUser }: ClientDashboardPro
           url: doc.url || null,
           mimeType: doc.mimeType || null,
           filesize: doc.filesize || null,
+          documentType: doc.documentType || null,
           description: doc.description || null,
           tags: doc.tags || null,
-          relatedUser: typeof doc.relatedUser === 'string' ? doc.relatedUser : 
+          relatedUser: typeof doc.relatedUser === 'string' ? doc.relatedUser :
                       doc.relatedUser?.id || null,
-          relatedChallenge: typeof doc.relatedChallenge === 'string' ? doc.relatedChallenge : 
+          relatedChallenge: typeof doc.relatedChallenge === 'string' ? doc.relatedChallenge :
                            doc.relatedChallenge?.id || null,
           isPublic: doc.isPublic || null,
-          uploadedBy: typeof doc.uploadedBy === 'string' ? doc.uploadedBy : 
+          uploadedBy: typeof doc.uploadedBy === 'string' ? doc.uploadedBy :
                       doc.uploadedBy?.id || null,
           createdAt: doc.createdAt || null,
           updatedAt: doc.updatedAt || null,
@@ -531,7 +588,37 @@ export function ClientDashboard({ user: _user, currentUser }: ClientDashboardPro
               
               <div className="flex items-center gap-4">
                 <div className="flex items-center gap-3">
-                  <Bell className="w-5 h-5 text-navy-600 hover:text-blue-600 cursor-pointer transition-colors" />
+                  <div className="relative">
+                    <Bell className="w-5 h-5 text-navy-600 hover:text-blue-600 cursor-pointer transition-colors" />
+                    {/* Notification Badge */}
+                    {(() => {
+                      const checkIsNew = (doc: { createdAt?: string | null }) => {
+                        if (!doc.createdAt) return false
+                        const docDate = new Date(doc.createdAt)
+                        const sevenDaysAgo = new Date()
+                        sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7)
+                        return docDate > sevenDaysAgo
+                      }
+
+                      const hasNew = applications.some(app => {
+                        const adminDocs = app.documents?.filter(doc => doc.documentType === 'completion-document') || []
+                        return adminDocs.some(checkIsNew)
+                      })
+
+                      const totalNew = applications.reduce((count, app) => {
+                        const adminDocs = app.documents?.filter(doc => doc.documentType === 'completion-document') || []
+                        return count + adminDocs.filter(checkIsNew).length
+                      }, 0)
+
+                      return hasNew ? (
+                        <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full flex items-center justify-center">
+                          <span className="text-white text-xs font-bold">
+                            {totalNew}
+                          </span>
+                        </span>
+                      ) : null
+                    })()}
+                  </div>
                   <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full flex items-center justify-center text-white font-medium text-sm">
                     {`${currentUser.firstName?.[0] || ''}${currentUser.lastName?.[0] || ''}`}
                   </div>
@@ -579,31 +666,59 @@ export function ClientDashboard({ user: _user, currentUser }: ClientDashboardPro
                         </CardHeader>
                         <CardContent>
                           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                            {applications.map((app) => (
-                              <button
-                                key={app.id}
-                                onClick={() => setSelectedApplication(app)}
-                                className={cn(
-                                  "p-4 rounded-xl border-2 transition-all duration-300 text-left",
-                                  selectedApplication?.id === app.id
-                                    ? "border-blue-500 bg-blue-50 shadow-md"
-                                    : "border-navy-200 hover:border-blue-300 hover:bg-blue-50/50"
-                                )}
-                              >
-                                <div className="flex items-center justify-between mb-2">
-                                  <span className="font-semibold text-navy-900">#{app.id.slice(-6)}</span>
-                                  {getStatusBadge(app.status)}
-                                </div>
-                                <p className="text-sm text-navy-600">
-                                  Submitted {formatDate(app.submittedAt || app.createdAt || new Date().toISOString())}
-                                </p>
-                                {app.documents && app.documents.length > 0 && (
-                                  <p className="text-xs text-navy-500 mt-1">
-                                    {app.documents.length} document{app.documents.length > 1 ? 's' : ''}
+                            {applications.map((app) => {
+                              // Check for new admin documents in this application
+                              const checkDocIsNew = (doc: { createdAt?: string | null }) => {
+                                if (!doc.createdAt) return false
+                                const docDate = new Date(doc.createdAt)
+                                const sevenDaysAgo = new Date()
+                                sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7)
+                                return docDate > sevenDaysAgo
+                              }
+
+                              const adminDocs = app.documents?.filter(doc => doc.documentType === 'completion-document') || []
+                              const hasNewAdminDocs = adminDocs.some(checkDocIsNew)
+                              const newDocsCount = adminDocs.filter(checkDocIsNew).length
+
+                              return (
+                                <button
+                                  key={app.id}
+                                  onClick={() => setSelectedApplication(app)}
+                                  className={cn(
+                                    "p-4 rounded-xl border-2 transition-all duration-300 text-left relative",
+                                    selectedApplication?.id === app.id
+                                      ? "border-blue-500 bg-blue-50 shadow-md"
+                                      : "border-navy-200 hover:border-blue-300 hover:bg-blue-50/50"
+                                  )}
+                                >
+                                  {/* New Response Indicator */}
+                                  {hasNewAdminDocs && (
+                                    <div className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 rounded-full flex items-center justify-center shadow-lg animate-pulse">
+                                      <span className="text-white text-xs font-bold">{newDocsCount}</span>
+                                    </div>
+                                  )}
+
+                                  <div className="flex items-center justify-between mb-2">
+                                    <span className="font-semibold text-navy-900">#{app.id.slice(-6)}</span>
+                                    {getStatusBadge(app.status)}
+                                  </div>
+                                  <p className="text-sm text-navy-600">
+                                    Submitted {formatDate(app.submittedAt || app.createdAt || new Date().toISOString())}
                                   </p>
-                                )}
-                              </button>
-                            ))}
+                                  {app.documents && app.documents.length > 0 && (
+                                    <p className="text-xs text-navy-500 mt-1">
+                                      {app.documents.length} document{app.documents.length > 1 ? 's' : ''}
+                                    </p>
+                                  )}
+                                  {hasNewAdminDocs && (
+                                    <div className="mt-2 flex items-center gap-1 text-xs font-semibold text-amber-700 bg-amber-100 px-2 py-1 rounded">
+                                      <Bell className="w-3 h-3" />
+                                      New Response
+                                    </div>
+                                  )}
+                                </button>
+                              )
+                            })}
                           </div>
                         </CardContent>
                       </Card>
@@ -670,7 +785,7 @@ export function ClientDashboard({ user: _user, currentUser }: ClientDashboardPro
                             </div>
 
                             {/* Application Documents */}
-                            <div className="space-y-4">
+                            <div className="space-y-6">
                               <div className="flex items-center justify-between">
                                 <Label className="font-medium text-navy-900">Application Documents</Label>
                                 <input
@@ -715,49 +830,187 @@ export function ClientDashboard({ user: _user, currentUser }: ClientDashboardPro
                               )}
 
                               {selectedApplication.documents && selectedApplication.documents.length > 0 ? (
-                                <div className="space-y-2">
-                                  {selectedApplication.documents.map((doc) => (
-                                    <div key={doc.id} className="flex items-center justify-between p-3 bg-emerald-50 rounded-lg border border-emerald-200">
-                                      <div className="flex items-center gap-3">
-                                        <FileIcon className="w-5 h-5 text-emerald-600" />
-                                        <div>
-                                          <p className="font-medium text-emerald-900">
-                                            {doc.filename || `Document ${doc.id.slice(-6)}`}
-                                          </p>
-                                          <p className="text-xs text-emerald-600">
-                                            Uploaded {formatDate(doc.createdAt || new Date().toISOString())}
-                                            {doc.filesize && ` • ${formatFileSize(doc.filesize)}`}
-                                          </p>
-                                        </div>
-                                      </div>
-                                      <div className="flex items-center gap-2">
-                                        {doc.url && (
-                                          <Button
-                                            size="sm"
-                                            variant="outline"
-                                            className="border-emerald-300"
-                                            onClick={() => doc.url && window.open(doc.url, '_blank')}
-                                          >
-                                            <Download className="w-4 h-4" />
-                                          </Button>
-                                        )}
-                                        <Button
-                                          size="sm"
-                                          variant="outline"
-                                          className="border-red-300 text-red-600"
-                                          onClick={() => handleDocumentDelete(doc.id)}
-                                          disabled={isDeletingDocument === doc.id}
-                                        >
-                                          {isDeletingDocument === doc.id ? (
-                                            <Loader2 className="w-4 h-4 animate-spin" />
-                                          ) : (
-                                            <Trash2 className="w-4 h-4" />
+                                (() => {
+                                  // Separate documents by type
+                                  const adminDocs = selectedApplication.documents.filter(doc => doc.documentType === 'completion-document')
+                                  const clientDocs = selectedApplication.documents.filter(doc => doc.documentType === 'initial-submission' || doc.documentType === 'supporting-document')
+
+                                  // Helper to check if document is new (within 7 days)
+                                  const isNewDocument = (doc: { createdAt?: string | null }) => {
+                                    if (!doc.createdAt) return false
+                                    const docDate = new Date(doc.createdAt)
+                                    const sevenDaysAgo = new Date()
+                                    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7)
+                                    return docDate > sevenDaysAgo
+                                  }
+
+                                  const newAdminDocsCount = adminDocs.filter(isNewDocument).length
+
+                                  return (
+                                    <div className="space-y-6">
+                                      {/* Admin Responses Section - PROMINENT */}
+                                      {adminDocs.length > 0 && (
+                                        <div className="bg-gradient-to-r from-amber-50 via-amber-100 to-amber-50 border-2 border-amber-400 rounded-xl p-6 shadow-lg">
+                                          <div className="flex items-center justify-between mb-4">
+                                            <div className="flex items-center gap-3">
+                                              <div className="w-10 h-10 bg-gradient-to-r from-amber-500 to-amber-600 rounded-xl flex items-center justify-center">
+                                                <CheckCircle className="w-6 h-6 text-white" />
+                                              </div>
+                                              <div>
+                                                <h3 className="text-lg font-bold text-amber-900 flex items-center gap-2">
+                                                  Admin Responses
+                                                  {newAdminDocsCount > 0 && (
+                                                    <span className="animate-pulse bg-red-500 text-white text-xs px-2.5 py-1 rounded-full font-bold shadow-md">
+                                                      {newAdminDocsCount} NEW
+                                                    </span>
+                                                  )}
+                                                </h3>
+                                                <p className="text-sm text-amber-700">Documents from your loan officer</p>
+                                              </div>
+                                            </div>
+                                          </div>
+
+                                          {/* New Document Alert */}
+                                          {newAdminDocsCount > 0 && (
+                                            <div className="mb-4 flex items-start gap-3 bg-white border-2 border-amber-500 rounded-lg p-4 shadow-sm">
+                                              <AlertCircle className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
+                                              <div>
+                                                <p className="text-sm font-semibold text-amber-900">
+                                                  You have {newAdminDocsCount} new {newAdminDocsCount === 1 ? 'response' : 'responses'} from your loan officer!
+                                                </p>
+                                                <p className="text-xs text-amber-700 mt-1">
+                                                  Please review and download {newAdminDocsCount === 1 ? 'this document' : 'these documents'} below.
+                                                </p>
+                                              </div>
+                                            </div>
                                           )}
-                                        </Button>
-                                      </div>
+
+                                          <div className="space-y-3">
+                                            {adminDocs.map((doc) => {
+                                              const docStyle = getDocumentStyle(doc.documentType)
+                                              const isNew = isNewDocument(doc)
+                                              return (
+                                                <div key={doc.id} className={cn(
+                                                  'flex items-center justify-between p-4 rounded-lg border-2 bg-white shadow-sm transition-all duration-300',
+                                                  isNew ? 'border-amber-500 shadow-amber-200' : 'border-amber-200'
+                                                )}>
+                                                  <div className="flex items-center gap-3 flex-1 min-w-0">
+                                                    <FileIcon className={cn('w-6 h-6 flex-shrink-0', docStyle.icon)} />
+                                                    <div className="flex-1 min-w-0">
+                                                      <div className="flex items-center gap-2 flex-wrap mb-1">
+                                                        <p className={cn('font-semibold truncate', docStyle.text)}>
+                                                          {doc.filename || `Document ${doc.id.slice(-6)}`}
+                                                        </p>
+                                                        {getDocumentTypeBadge(doc.documentType)}
+                                                        {isNew && (
+                                                          <span className="animate-pulse inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-red-500 text-white shadow-md">
+                                                            NEW
+                                                          </span>
+                                                        )}
+                                                      </div>
+                                                      <p className={cn('text-xs', docStyle.subtext)}>
+                                                        Uploaded {formatDate(doc.createdAt || new Date().toISOString())}
+                                                        {doc.filesize && ` • ${formatFileSize(doc.filesize)}`}
+                                                      </p>
+                                                      {doc.description && (
+                                                        <p className="text-xs text-amber-700 mt-1 italic">
+                                                          {doc.description}
+                                                        </p>
+                                                      )}
+                                                    </div>
+                                                  </div>
+                                                  <div className="flex items-center gap-2 flex-shrink-0 ml-2">
+                                                    {doc.url && (
+                                                      <Button
+                                                        size="sm"
+                                                        className="bg-gradient-to-r from-amber-500 to-amber-600 text-white hover:from-amber-600 hover:to-amber-700 shadow-md"
+                                                        onClick={() => doc.url && window.open(doc.url, '_blank')}
+                                                      >
+                                                        <Download className="w-4 h-4 mr-1" />
+                                                        Download
+                                                      </Button>
+                                                    )}
+                                                  </div>
+                                                </div>
+                                              )
+                                            })}
+                                          </div>
+                                        </div>
+                                      )}
+
+                                      {/* Your Uploads Section */}
+                                      {clientDocs.length > 0 && (
+                                        <div className="border border-navy-200 rounded-xl p-6 bg-white">
+                                          <div className="flex items-center gap-3 mb-4">
+                                            <div className="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center">
+                                              <FileText className="w-5 h-5 text-blue-600" />
+                                            </div>
+                                            <div>
+                                              <h3 className="text-lg font-semibold text-navy-900">Your Uploads</h3>
+                                              <p className="text-sm text-navy-600">Documents you've submitted</p>
+                                            </div>
+                                          </div>
+                                          <div className="space-y-2">
+                                            {clientDocs.map((doc) => {
+                                              const docStyle = getDocumentStyle(doc.documentType)
+                                              return (
+                                                <div key={doc.id} className={cn('flex items-center justify-between p-3 rounded-lg border', docStyle.container)}>
+                                                  <div className="flex items-center gap-3 flex-1 min-w-0">
+                                                    <FileIcon className={cn('w-5 h-5 flex-shrink-0', docStyle.icon)} />
+                                                    <div className="flex-1 min-w-0">
+                                                      <div className="flex items-center gap-2 flex-wrap mb-1">
+                                                        <p className={cn('font-medium truncate', docStyle.text)}>
+                                                          {doc.filename || `Document ${doc.id.slice(-6)}`}
+                                                        </p>
+                                                        {getDocumentTypeBadge(doc.documentType)}
+                                                      </div>
+                                                      <p className={cn('text-xs', docStyle.subtext)}>
+                                                        Uploaded {formatDate(doc.createdAt || new Date().toISOString())}
+                                                        {doc.filesize && ` • ${formatFileSize(doc.filesize)}`}
+                                                      </p>
+                                                    </div>
+                                                  </div>
+                                                  <div className="flex items-center gap-2 flex-shrink-0 ml-2">
+                                                    {doc.url && (
+                                                      <Button
+                                                        size="sm"
+                                                        variant="outline"
+                                                        className={docStyle.button}
+                                                        onClick={() => doc.url && window.open(doc.url, '_blank')}
+                                                      >
+                                                        <Download className="w-4 h-4" />
+                                                      </Button>
+                                                    )}
+                                                    <Button
+                                                      size="sm"
+                                                      variant="outline"
+                                                      className="border-red-300 text-red-600"
+                                                      onClick={() => handleDocumentDelete(doc.id)}
+                                                      disabled={isDeletingDocument === doc.id}
+                                                    >
+                                                      {isDeletingDocument === doc.id ? (
+                                                        <Loader2 className="w-4 h-4 animate-spin" />
+                                                      ) : (
+                                                        <Trash2 className="w-4 h-4" />
+                                                      )}
+                                                    </Button>
+                                                  </div>
+                                                </div>
+                                              )
+                                            })}
+                                          </div>
+                                        </div>
+                                      )}
+
+                                      {adminDocs.length === 0 && clientDocs.length === 0 && (
+                                        <div className="text-center py-8 text-navy-500">
+                                          <FileText className="w-8 h-8 mx-auto mb-2 opacity-50" />
+                                          <p className="text-sm">No documents uploaded yet</p>
+                                        </div>
+                                      )}
                                     </div>
-                                  ))}
-                                </div>
+                                  )
+                                })()
                               ) : (
                                 <div className="text-center py-8 text-navy-500">
                                   <FileText className="w-8 h-8 mx-auto mb-2 opacity-50" />
@@ -1275,59 +1528,65 @@ export function ClientDashboard({ user: _user, currentUser }: ClientDashboardPro
                         
                         {userDocuments.length > 0 ? (
                           <div className="space-y-2">
-                            {userDocuments.map((doc) => (
-                              <div key={doc.id} className="flex items-center justify-between p-3 bg-emerald-50 rounded-lg border border-emerald-200">
-                                <div className="flex items-center gap-3">
-                                  <FileIcon className="w-5 h-5 text-emerald-600" />
-                                  <div>
-                                    <p className="font-medium text-emerald-900">
-                                      {doc.filename || `Document ${doc.id.slice(-6)}`}
-                                    </p>
-                                    <p className="text-xs text-emerald-600">
-                                      Uploaded {formatDate(doc.createdAt || new Date().toISOString())}
-                                      {doc.filesize && ` • ${formatFileSize(doc.filesize)}`}
-                                    </p>
-                                    {doc.description && (
-                                      <p className="text-xs text-emerald-700 mt-1">{doc.description}</p>
-                                    )}
-                                    {doc.tags && doc.tags.length > 0 && (
-                                      <div className="flex gap-1 mt-1">
-                                        {doc.tags.map((tag, index) => (
-                                          <span key={index} className="inline-block px-2 py-0.5 bg-emerald-100 text-emerald-700 rounded text-xs">
-                                            {tag.tag}
-                                          </span>
-                                        ))}
+                            {userDocuments.map((doc) => {
+                              const docStyle = getDocumentStyle(doc.documentType)
+                              return (
+                                <div key={doc.id} className={cn('flex items-center justify-between p-3 rounded-lg border', docStyle.container)}>
+                                  <div className="flex items-center gap-3 flex-1 min-w-0">
+                                    <FileIcon className={cn('w-5 h-5 flex-shrink-0', docStyle.icon)} />
+                                    <div className="flex-1 min-w-0">
+                                      <div className="flex items-center gap-2 flex-wrap mb-1">
+                                        <p className={cn('font-medium truncate', docStyle.text)}>
+                                          {doc.filename || `Document ${doc.id.slice(-6)}`}
+                                        </p>
+                                        {getDocumentTypeBadge(doc.documentType)}
                                       </div>
-                                    )}
+                                      <p className={cn('text-xs', docStyle.subtext)}>
+                                        Uploaded {formatDate(doc.createdAt || new Date().toISOString())}
+                                        {doc.filesize && ` • ${formatFileSize(doc.filesize)}`}
+                                      </p>
+                                      {doc.description && (
+                                        <p className={cn('text-xs mt-1', docStyle.subtext)}>{doc.description}</p>
+                                      )}
+                                      {doc.tags && doc.tags.length > 0 && (
+                                        <div className="flex gap-1 mt-1 flex-wrap">
+                                          {doc.tags.map((tag, index) => (
+                                            <span key={index} className={cn('inline-block px-2 py-0.5 rounded text-xs', docStyle.container)}>
+                                              {tag.tag}
+                                            </span>
+                                          ))}
+                                        </div>
+                                      )}
+                                    </div>
                                   </div>
-                                </div>
-                                <div className="flex items-center gap-2">
-                                  {doc.url && (
+                                  <div className="flex items-center gap-2 flex-shrink-0 ml-2">
+                                    {doc.url && (
+                                      <Button
+                                        size="sm"
+                                        variant="outline"
+                                        className={docStyle.button}
+                                        onClick={() => doc.url && window.open(doc.url, '_blank')}
+                                      >
+                                        <Download className="w-4 h-4" />
+                                      </Button>
+                                    )}
                                     <Button
                                       size="sm"
                                       variant="outline"
-                                      className="border-emerald-300"
-                                      onClick={() => doc.url && window.open(doc.url, '_blank')}
+                                      className="border-red-300 text-red-600"
+                                      onClick={() => handleDocumentDelete(doc.id)}
+                                      disabled={isDeletingDocument === doc.id}
                                     >
-                                      <Download className="w-4 h-4" />
+                                      {isDeletingDocument === doc.id ? (
+                                        <Loader2 className="w-4 h-4 animate-spin" />
+                                      ) : (
+                                        <Trash2 className="w-4 h-4" />
+                                      )}
                                     </Button>
-                                  )}
-                                  <Button
-                                    size="sm"
-                                    variant="outline"
-                                    className="border-red-300 text-red-600"
-                                    onClick={() => handleDocumentDelete(doc.id)}
-                                    disabled={isDeletingDocument === doc.id}
-                                  >
-                                    {isDeletingDocument === doc.id ? (
-                                      <Loader2 className="w-4 h-4 animate-spin" />
-                                    ) : (
-                                      <Trash2 className="w-4 h-4" />
-                                    )}
-                                  </Button>
+                                  </div>
                                 </div>
-                              </div>
-                            ))}
+                              )
+                            })}
                           </div>
                         ) : (
                           <div className="text-center py-8 text-navy-500">

@@ -11,6 +11,29 @@ export const Documents: CollectionConfig = {
   },
   fields: [
     {
+      name: 'documentType',
+      type: 'select',
+      options: [
+        {
+          label: 'Initial Submission',
+          value: 'initial-submission',
+        },
+        {
+          label: 'Completion Document',
+          value: 'completion-document',
+        },
+        {
+          label: 'Supporting Document',
+          value: 'supporting-document',
+        },
+      ],
+      required: false,
+      admin: {
+        description: 'Type of document for categorization',
+        position: 'sidebar',
+      },
+    },
+    {
       name: 'description',
       type: 'textarea',
       required: false,

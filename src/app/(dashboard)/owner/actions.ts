@@ -1,10 +1,11 @@
 'use server'
 
 import { getPayload } from 'payload'
+import { login } from '@payloadcms/next/auth'
 import configPromise from '@payload-config'
-import { 
+import {
   PasswordVerificationSchema,
-  PasswordVerificationFormState 
+  PasswordVerificationFormState
 } from '@/lib/validations'
 import { redirect } from 'next/navigation'
 
@@ -159,6 +160,22 @@ export async function createOwnerAccount(
         },
       })
     }
+
+    // Authenticate the user automatically after account creation
+    // This sets the HTTP-only authentication cookie for the session
+    await login({
+      collection: 'users',
+      config: configPromise,
+      email: challenge.email,
+      password: password,
+    })
+
+    console.log('User created and authenticated:', {
+      userId: newUser.id,
+      username: username,
+      email: challenge.email,
+      challengeId: challengeId,
+    })
 
     return {
       success: true,

@@ -209,6 +209,10 @@ export interface Media {
 export interface Document {
   id: string;
   /**
+   * Type of document for categorization
+   */
+  documentType?: ('initial-submission' | 'completion-document' | 'supporting-document') | null;
+  /**
    * Optional description for this document
    */
   description?: string | null;
@@ -432,6 +436,7 @@ export interface MediaSelect<T extends boolean = true> {
  * via the `definition` "documents_select".
  */
 export interface DocumentsSelect<T extends boolean = true> {
+  documentType?: T;
   description?: T;
   tags?:
     | T

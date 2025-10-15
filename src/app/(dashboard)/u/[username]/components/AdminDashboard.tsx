@@ -10,6 +10,7 @@ import { Select } from '@/components/ui/select'
 import { Badge } from '@/components/ui/badge'
 import BFFLogo from '@/components/layout/BFFLogo'
 import UserManagement from './UserManagement'
+import QueriesManagement from './QueriesManagement'
 import type { User } from '@/payload-types'
 import {
   BarChart3,
@@ -19,9 +20,6 @@ import {
   DollarSign,
   TrendingUp,
   LogOut,
-  Search,
-  Filter,
-  Download,
   Bell,
   Calendar,
   Globe,
@@ -143,16 +141,6 @@ const getStatusBadge = (status: string) => {
 
 export function AdminDashboard({ user: _user, currentUser }: AdminDashboardProps) {
   const [activePage, setActivePage] = useState<ActivePage>('overview')
-  const [searchTerm, setSearchTerm] = useState('')
-  const [statusFilter, setStatusFilter] = useState<string>('all')
-
-  const filteredApplications = mockApplications.filter(app => {
-    const matchesSearch = app.applicantName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         app.id.toLowerCase().includes(searchTerm.toLowerCase())
-    const matchesStatus = statusFilter === 'all' || app.status === statusFilter
-    
-    return matchesSearch && matchesStatus
-  })
 
   const handleLogout = async () => {
     const { logoutAction } = await import('@/app/(dashboard)/u/[username]/actions/logoutAction')
@@ -407,115 +395,8 @@ export function AdminDashboard({ user: _user, currentUser }: AdminDashboardProps
             )}
 
             {activePage === 'queries' && (
-              <div className="space-y-6 animate-fade-in-up">
-                {/* Search and Filters */}
-                <Card className="card-elevated">
-                  <CardContent className="p-6">
-                    <div className="flex flex-col sm:flex-row gap-4">
-                      <div className="flex-1 relative">
-                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-navy-400 w-4 h-4" />
-                        <Input
-                          placeholder="Search by name or application ID..."
-                          className="pl-10 input-professional"
-                          value={searchTerm}
-                          onChange={(e) => setSearchTerm(e.target.value)}
-                        />
-                      </div>
-                      <div className="flex gap-3">
-                        <Select 
-                          value={statusFilter} 
-                          onValueChange={setStatusFilter}
-                        >
-                          <option value="all">All Status</option>
-                          <option value="pending">Pending</option>
-                          <option value="under-review">Under Review</option>
-                          <option value="approved">Approved</option>
-                          <option value="rejected">Rejected</option>
-                        </Select>
-                        <Button variant="outline" className="flex items-center gap-2">
-                          <Filter className="w-4 h-4" />
-                          Filter
-                        </Button>
-                        <Button variant="outline" className="flex items-center gap-2">
-                          <Download className="w-4 h-4" />
-                          Export
-                        </Button>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                {/* Applications Table */}
-                <Card className="card-elevated">
-                  <CardHeader>
-                    <CardTitle>Mortgage Applications</CardTitle>
-                    <CardDescription>
-                      Showing {filteredApplications.length} of {mockApplications.length} applications
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="overflow-x-auto">
-                      <table className="w-full">
-                        <thead>
-                          <tr className="border-b border-navy-100">
-                            <th className="text-left py-3 px-4 font-medium text-navy-700">Application</th>
-                            <th className="text-left py-3 px-4 font-medium text-navy-700">Applicant</th>
-                            <th className="text-left py-3 px-4 font-medium text-navy-700">Loan Amount</th>
-                            <th className="text-left py-3 px-4 font-medium text-navy-700">Type</th>
-                            <th className="text-left py-3 px-4 font-medium text-navy-700">Credit Score</th>
-                            <th className="text-left py-3 px-4 font-medium text-navy-700">Status</th>
-                            <th className="text-left py-3 px-4 font-medium text-navy-700">Date</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {filteredApplications.map((app) => (
-                            <tr 
-                              key={app.id} 
-                              className="border-b border-navy-50 hover:bg-blue-50/50 transition-all duration-300"
-                            >
-                              <td className="py-4 px-4">
-                                <span className="font-mono text-sm font-medium text-navy-900">{app.id}</span>
-                              </td>
-                              <td className="py-4 px-4">
-                                <div className="flex items-center gap-3">
-                                  <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full flex items-center justify-center text-white font-medium text-xs">
-                                    {app.applicantName.split(' ').map(n => n[0]).join('')}
-                                  </div>
-                                  <div>
-                                    <p className="font-medium text-navy-900">{app.applicantName}</p>
-                                    <p className="text-xs text-navy-500">Income: {formatCurrency(app.income)}</p>
-                                  </div>
-                                </div>
-                              </td>
-                              <td className="py-4 px-4">
-                                <p className="font-semibold text-navy-900">{formatCurrency(app.loanAmount)}</p>
-                                <p className="text-xs text-navy-500">Property: {formatCurrency(app.propertyValue)}</p>
-                              </td>
-                              <td className="py-4 px-4">
-                                <span className="text-sm text-navy-700">{app.loanType}</span>
-                              </td>
-                              <td className="py-4 px-4">
-                                <span className={cn(
-                                  "text-sm font-medium",
-                                  app.creditScore >= 750 ? "text-emerald-600" :
-                                  app.creditScore >= 700 ? "text-amber-600" : "text-red-600"
-                                )}>
-                                  {app.creditScore}
-                                </span>
-                              </td>
-                              <td className="py-4 px-4">
-                                {getStatusBadge(app.status)}
-                              </td>
-                              <td className="py-4 px-4">
-                                <span className="text-sm text-navy-600">{formatDate(app.submittedDate)}</span>
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    </div>
-                  </CardContent>
-                </Card>
+              <div className="animate-fade-in-up">
+                <QueriesManagement currentUser={currentUser} />
               </div>
             )}
 

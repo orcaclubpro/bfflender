@@ -72,6 +72,7 @@ export async function POST(request: NextRequest) {
     const document = await payload.create({
       collection: 'documents',
       data: {
+        documentType: 'initial-submission',
         description: `P&L document from chatbot submission by ${name}`,
         tags: [
           { tag: 'chatbot-upload' },
