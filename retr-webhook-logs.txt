@@ -1,0 +1,72 @@
+
+================================================================================
+RETR WEBHOOK RECEIVED
+Timestamp: 2025-10-26T23:56:11.779Z
+================================================================================
+
+Headers:
+{
+  "accept": "*/*",
+  "content-length": "257",
+  "content-type": "application/json",
+  "host": "localhost:3000",
+  "user-agent": "curl/8.7.1",
+  "x-forwarded-for": "::1",
+  "x-forwarded-host": "localhost:3000",
+  "x-forwarded-port": "3000",
+  "x-forwarded-proto": "http"
+}
+
+Payload:
+{
+  "eventType": "test_webhook",
+  "timestamp": "2025-10-26T23:58:00Z",
+  "webhookId": "file-log-test-001",
+  "loanOfficer": {
+    "fullName": "Test Officer",
+    "email": "test@example.com",
+    "nmlsId": "999999",
+    "totalLoanCount": 10,
+    "totalLoanVolume": 5000000,
+    "companyName": "Test Company"
+  }
+}
+
+--------------------------------------------------------------------------------
+
+
+================================================================================
+RETR WEBHOOK RECEIVED
+Timestamp: 2025-10-26T23:56:27.855Z
+================================================================================
+
+Headers:
+{
+  "accept": "*/*",
+  "content-length": "203",
+  "content-type": "application/json",
+  "host": "localhost:3000",
+  "user-agent": "curl/8.7.1",
+  "x-forwarded-for": "::1",
+  "x-forwarded-host": "localhost:3000",
+  "x-forwarded-port": "3000",
+  "x-forwarded-proto": "http"
+}
+
+Payload:
+{
+  "eventType": "test_append",
+  "timestamp": "2025-10-26T23:59:00Z",
+  "webhookId": "file-log-test-002",
+  "loanOfficers": [
+    {
+      "fullName": "Second Test",
+      "nmlsId": "888888",
+      "totalLoanCount": 20,
+      "totalLoanVolume": 10000000
+    }
+  ]
+}
+
+--------------------------------------------------------------------------------
+
