@@ -1,6 +1,7 @@
 import React from 'react'
 import type { Metadata } from "next"
 import { ChatbotProvider } from "./components/ChatbotProvider"
+import Header from "@/components/layout/Header"
 
 export const metadata: Metadata = {
   title: "BFFLender - The P&L Challenge | AllWestern Mortgage",
@@ -14,6 +15,7 @@ export default async function FrontendLayout(props: { children: React.ReactNode 
 
   return (
     <ChatbotProvider>
+      <Header />
       <main>{children}</main>
     </ChatbotProvider>
   )

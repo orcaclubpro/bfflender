@@ -4,6 +4,14 @@ import { withPayload } from '@payloadcms/next/withPayload'
 const nextConfig = {
   reactStrictMode: true,
   images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'richardwhite.allwestern.com',
+        port: '',
+        pathname: '/files/**',
+      },
+    ],
     domains: ['localhost']
   },
   experimental: {
